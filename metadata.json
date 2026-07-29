@@ -1,0 +1,6 @@
+{
+  "name": "Graphix Glow",
+  "description": "Página web corporativa premium para Graphix Glow - Agencia de Inteligencia Artificial, Desarrollo Web, Apps, Automatización, Branding y Marketing Digital.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
