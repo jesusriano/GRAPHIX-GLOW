@@ -256,7 +256,7 @@ export const AiHolographicCore: React.FC<AiHolographicCoreProps> = ({ onOpenAiCh
   }, []);
 
   return (
-    <div className="relative w-full aspect-square max-w-[500px] lg:max-w-[560px] mx-auto flex items-center justify-center select-none backdrop-blur-md bg-slate-950/50 border border-white/10 rounded-3xl p-6 shadow-2xl shadow-cyan-500/10">
+    <div className="relative w-full aspect-square max-w-[500px] lg:max-w-[560px] mx-auto flex items-center justify-center select-none">
       {/* Dynamic Background Glow Halo */}
       <div className="absolute inset-0 bg-gradient-to-tr from-cyan-500/20 via-blue-600/20 to-indigo-600/15 rounded-full blur-[80px] pointer-events-none animate-pulse" />
 

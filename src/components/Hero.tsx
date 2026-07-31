@@ -47,7 +47,7 @@ export const Hero: React.FC<HeroProps> = ({
     <section
       id="hero"
       onMouseMove={handleMouseMove}
-      className="relative min-h-screen mt-[-18vh] sm:mt-0 pt-12 sm:pt-32 pb-16 flex flex-col justify-center overflow-hidden"
+      className="relative min-h-screen mt-[-6vh] sm:mt-0 pt-20 sm:pt-32 pb-16 flex flex-col justify-center overflow-hidden"
     >
       {/* Background Animated Radial Glow Spheres */}
       <motion.div
@@ -120,7 +120,7 @@ export const Hero: React.FC<HeroProps> = ({
               className="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-[1.12] mb-6"
             >
               <motion.span
-                style={{ borderStyle: 'groove', borderWidth: '2px', borderColor: 'rgba(0,210,255,0.4)', padding: '6px 12px', borderRadius: '16px', x: x2, y: y2 }}
+                style={{ x: x2, y: y2 }}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8 }}

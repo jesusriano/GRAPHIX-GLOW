@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'motion/react';
 import { 
   Mail, 
   Phone, 
@@ -166,16 +167,31 @@ export const Footer: React.FC<FooterProps> = ({ onOpenQuote, onNavigate }) => {
       </div>
 
       {/* Floating Authentic WhatsApp Button on the RIGHT */}
-      <button
+      <motion.button
         onClick={openWhatsapp}
         title="Contactar por WhatsApp"
-        className="fixed bottom-6 right-6 z-50 p-4 rounded-full bg-[#25D366] text-white shadow-[0_0_30px_rgba(37,211,102,0.6)] hover:scale-110 active:scale-95 transition-all duration-300 flex items-center justify-center cursor-pointer group border-2 border-white/20"
+        animate={{
+          y: [0, -8, 0],
+          boxShadow: [
+            '0 0 20px rgba(37,211,102,0.4)',
+            '0 0 35px rgba(37,211,102,0.8)',
+            '0 0 20px rgba(37,211,102,0.4)',
+          ],
+        }}
+        transition={{
+          duration: 3,
+          repeat: Infinity,
+          ease: 'easeInOut',
+        }}
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.95 }}
+        className="fixed bottom-6 right-6 z-50 p-4 rounded-full bg-[#25D366] text-white flex items-center justify-center cursor-pointer group border-2 border-white/30"
       >
         <WhatsappIcon className="w-7 h-7 text-white" />
         <span className="max-w-0 overflow-hidden whitespace-nowrap group-hover:max-w-xs transition-all duration-300 text-xs font-bold pl-0 group-hover:pl-2 text-slate-950">
           WhatsApp Directo
         </span>
-      </button>
+      </motion.button>
     </footer>
   );
 };
