@@ -104,14 +104,20 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
     const text = encodeURIComponent(
       `Hola Graphix Glow, me gustaría solicitar información y cotización sobre el servicio de ${serviceType}.`
     );
-    window.open(`https://wa.me/525512345678?text=${text}`, '_blank');
+    window.open(`https://wa.me/525539469253?text=${text}`, '_blank');
   };
 
   return (
     <section id="contact" className="py-24 relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          className="text-center max-w-3xl mx-auto mb-16"
+        >
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-xs font-mono uppercase tracking-widest mb-4">
             <Sparkles className="w-3.5 h-3.5" />
             <span>Contacto Directo</span>
@@ -127,11 +133,17 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
           <p className="text-slate-300 font-light text-base sm:text-lg">
             Completa el formulario o escríbenos directamente por WhatsApp. Respondemos en menos de 24 horas.
           </p>
-        </div>
+        </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
           {/* Direct Contact Details Card */}
-          <div className="lg:col-span-5 space-y-6">
+          <motion.div 
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="lg:col-span-5 space-y-6"
+          >
             <div className="p-8 rounded-3xl bg-gradient-to-br from-slate-900/90 via-blue-950/40 to-slate-900/90 border border-white/10 backdrop-blur-xl space-y-6 shadow-[0_0_40px_rgba(0,102,255,0.15)]">
               <h3 className="text-2xl font-bold text-white mb-2">Información Corporativa</h3>
               <p className="text-xs text-slate-300 font-light leading-relaxed mb-6">
@@ -145,8 +157,8 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
                   </div>
                   <div>
                     <span className="text-[10px] text-slate-400 font-mono block">Correo Electrónico</span>
-                    <a href="mailto:contacto@graphixglow.com" className="text-sm font-bold text-white hover:text-cyan-300">
-                      contacto@graphixglow.com
+                    <a href="mailto:graphixglow@gmail.com" className="text-sm font-bold text-white hover:text-cyan-300">
+                      graphixglow@gmail.com
                     </a>
                   </div>
                 </div>
@@ -157,8 +169,8 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
                   </div>
                   <div>
                     <span className="text-[10px] text-slate-400 font-mono block">Teléfono / WhatsApp</span>
-                    <a href="tel:+525512345678" className="text-sm font-bold text-white hover:text-cyan-300">
-                      +52 55 1234 5678
+                    <a href="tel:+525539469253" className="text-sm font-bold text-white hover:text-cyan-300">
+                      +52 55 3946 9253
                     </a>
                   </div>
                 </div>
@@ -198,10 +210,16 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
                 <span className="text-xs text-slate-400">Atención a clientes en América Latina, España y EE.UU.</span>
               </div>
             </div>
-          </div>
+          </motion.div>
 
           {/* Contact Form */}
-          <div className="lg:col-span-7">
+          <motion.div 
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="lg:col-span-7"
+          >
             <div className="p-8 sm:p-10 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-xl relative shadow-[0_0_50px_rgba(0,0,0,0.5)]">
               {successMsg ? (
                 <div className="text-center py-12 space-y-4">
@@ -329,7 +347,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
                 </form>
               )}
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>

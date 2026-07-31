@@ -95,7 +95,13 @@ export const BlogSection: React.FC<BlogSectionProps> = ({ posts }) => {
     <section id="blog" className="py-24 relative overflow-hidden bg-[#030712]/70">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Header */}
-        <div className="text-center max-w-3xl mx-auto mb-12">
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          className="text-center max-w-3xl mx-auto mb-12"
+        >
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-xs font-mono uppercase tracking-widest mb-4">
             <Sparkles className="w-3.5 h-3.5" />
             <span>Blog Profesional & SEO</span>
@@ -111,10 +117,16 @@ export const BlogSection: React.FC<BlogSectionProps> = ({ posts }) => {
           <p className="text-slate-300 font-light text-base sm:text-lg">
             Guías especializadas en Inteligencia Artificial, SEO técnico, desarrollo de software y estrategias de crecimiento.
           </p>
-        </div>
+        </motion.div>
 
         {/* Category & Search Controls */}
-        <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-12">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="flex flex-col md:flex-row items-center justify-between gap-4 mb-12"
+        >
           <div className="flex items-center gap-2 overflow-x-auto w-full md:w-auto pb-2 scrollbar-none">
             {categories.map((cat) => (
               <button
@@ -141,7 +153,7 @@ export const BlogSection: React.FC<BlogSectionProps> = ({ posts }) => {
               className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-4 py-2 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-cyan-400 transition"
             />
           </div>
-        </div>
+        </motion.div>
 
         {/* Blog Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">

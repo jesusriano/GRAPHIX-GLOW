@@ -53,7 +53,13 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
     <section className="py-24 relative overflow-hidden bg-[#030712]/60">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          className="text-center max-w-3xl mx-auto mb-16"
+        >
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-xs font-mono uppercase tracking-widest mb-4">
             <Sparkles className="w-3.5 h-3.5" />
             <span>Confianza Comprobada</span>
@@ -69,7 +75,7 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
           <p className="text-slate-300 font-light text-base sm:text-lg">
             Resultados reales en crecimiento, eficiencia operativa y retorno de inversión.
           </p>
-        </div>
+        </motion.div>
 
         {/* Testimonial Carousel */}
         <div className="max-w-4xl mx-auto relative mb-20">

@@ -47,7 +47,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenQuote, onNavigate }) => {
   };
 
   const openWhatsapp = () => {
-    window.open('https://wa.me/525512345678', '_blank');
+    window.open('https://wa.me/525539469253', '_blank');
   };
 
   return (
@@ -119,8 +119,8 @@ export const Footer: React.FC<FooterProps> = ({ onOpenQuote, onNavigate }) => {
               Atención ejecutiva 24/7.
             </p>
             <div className="space-y-2 text-xs text-slate-300 font-mono mb-4">
-              <div>contacto@graphixglow.com</div>
-              <div>+52 55 1234 5678</div>
+              <div><a href="mailto:graphixglow@gmail.com" className="hover:text-cyan-300 transition">graphixglow@gmail.com</a></div>
+              <div><a href="tel:+525539469253" className="hover:text-cyan-300 transition">+52 55 3946 9253</a></div>
             </div>
 
             <button

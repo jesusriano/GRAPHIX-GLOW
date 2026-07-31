@@ -62,10 +62,39 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
   });
 
   return (
-    <section id="services" className="py-24 relative overflow-hidden bg-[#030712]/50">
+    <section id="services" className="py-24 relative overflow-hidden bg-gradient-to-b from-[#030712] via-[#091124] to-[#030712] border-y border-cyan-500/20">
+      {/* High-Impact Vibrant Animated Background Elements */}
+      <motion.div
+        animate={{
+          opacity: [0.35, 0.65, 0.35],
+          scale: [1, 1.15, 1],
+          x: [-20, 20, -20],
+        }}
+        transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut' }}
+        className="absolute top-0 left-10 w-[600px] h-[600px] bg-gradient-to-tr from-cyan-500/30 via-blue-600/25 to-indigo-600/20 rounded-full blur-[150px] pointer-events-none -z-0"
+      />
+      <motion.div
+        animate={{
+          opacity: [0.3, 0.6, 0.3],
+          scale: [1.1, 1, 1.1],
+          y: [-30, 30, -30],
+        }}
+        transition={{ duration: 9, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
+        className="absolute bottom-0 right-10 w-[700px] h-[700px] bg-gradient-to-bl from-purple-600/25 via-indigo-600/25 to-cyan-500/30 rounded-full blur-[160px] pointer-events-none -z-0"
+      />
+
+      {/* Cybernetic Grid Overlay */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#00d2ff08_1px,transparent_1px),linear-gradient(to_bottom,#00d2ff08_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] pointer-events-none -z-0" />
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Header */}
-        <div className="text-center max-w-3xl mx-auto mb-12">
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          className="text-center max-w-3xl mx-auto mb-12"
+        >
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-xs font-mono uppercase tracking-widest mb-4">
             <Sparkles className="w-3.5 h-3.5" />
             <span>Nuestras Soluciones</span>
@@ -81,10 +110,16 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
           <p className="text-slate-300 font-light text-base sm:text-lg">
             Desarrollamos soluciones integrales adaptadas a las necesidades específicas de tu empresa.
           </p>
-        </div>
+        </motion.div>
 
         {/* Search & Category Filter Bar */}
-        <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-12">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="flex flex-col md:flex-row items-center justify-between gap-4 mb-12"
+        >
           {/* Category Tabs */}
           <div className="flex items-center gap-2 overflow-x-auto w-full md:w-auto pb-2 md:pb-0 scrollbar-none">
             {categories.map((cat) => (
@@ -113,7 +148,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
               className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-4 py-2 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-cyan-400 transition"
             />
           </div>
-        </div>
+        </motion.div>
 
         {/* Services Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

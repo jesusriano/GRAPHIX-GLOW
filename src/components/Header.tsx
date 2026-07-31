@@ -123,15 +123,8 @@ export const Header: React.FC<HeaderProps> = ({
         {/* Mobile Menu Button */}
         <div className="flex sm:hidden items-center gap-2">
           <button
-            onClick={onOpenAiChat}
-            className="p-2 rounded-xl bg-cyan-500/20 border border-cyan-500/40 text-cyan-300"
-          >
-            <Bot className="w-4 h-4" />
-          </button>
-
-          <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-2 rounded-xl bg-white/5 border border-white/10 text-white"
+            className="p-2.5 rounded-xl bg-white/5 border border-white/10 text-white"
           >
             {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>

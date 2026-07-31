@@ -39,7 +39,13 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
     <section id="portfolio" className="py-24 relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Header */}
-        <div className="text-center max-w-3xl mx-auto mb-12">
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          className="text-center max-w-3xl mx-auto mb-12"
+        >
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-xs font-mono uppercase tracking-widest mb-4">
             <Sparkles className="w-3.5 h-3.5" />
             <span>Casos de Éxito</span>
@@ -55,10 +61,16 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
           <p className="text-slate-300 font-light text-base sm:text-lg">
             Explora las soluciones tecnológicas que hemos diseñado e implementado para marcas líderes.
           </p>
-        </div>
+        </motion.div>
 
         {/* Category Filters */}
-        <div className="flex items-center justify-center gap-2 overflow-x-auto pb-4 mb-12 scrollbar-none">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="flex items-center justify-center gap-2 overflow-x-auto pb-4 mb-12 scrollbar-none"
+        >
           {filterCategories.map((cat) => (
             <button
               key={cat.id}
@@ -72,7 +84,7 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
               {cat.label}
             </button>
           ))}
-        </div>
+        </motion.div>
 
         {/* Portfolio Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">

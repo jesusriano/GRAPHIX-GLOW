@@ -26,7 +26,13 @@ export const FaqSection: React.FC<FaqSectionProps> = ({ faqs }) => {
     <section className="py-24 relative overflow-hidden bg-[#030712]/50">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Header */}
-        <div className="text-center max-w-3xl mx-auto mb-12">
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          className="text-center max-w-3xl mx-auto mb-12"
+        >
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-xs font-mono uppercase tracking-widest mb-4">
             <Sparkles className="w-3.5 h-3.5" />
             <span>Resolvemos tus Dudas</span>
@@ -42,10 +48,16 @@ export const FaqSection: React.FC<FaqSectionProps> = ({ faqs }) => {
           <p className="text-slate-300 font-light text-base sm:text-lg">
             Todo lo que necesitas saber antes de iniciar tu proyecto con Graphix Glow.
           </p>
-        </div>
+        </motion.div>
 
         {/* Filter & Search Bar */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-10">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-10"
+        >
           <div className="flex items-center gap-2 overflow-x-auto w-full sm:w-auto pb-2 scrollbar-none">
             {categories.map((cat) => (
               <button
@@ -72,15 +84,19 @@ export const FaqSection: React.FC<FaqSectionProps> = ({ faqs }) => {
               className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-4 py-2 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-cyan-400 transition"
             />
           </div>
-        </div>
+        </motion.div>
 
         {/* Accordions */}
         <div className="space-y-4">
-          {filteredFaqs.map((faq) => {
+          {filteredFaqs.map((faq, idx) => {
             const isOpen = openId === faq.id;
             return (
-              <div
+              <motion.div
                 key={faq.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-40px" }}
+                transition={{ duration: 0.4, delay: idx * 0.06 }}
                 className="rounded-2xl bg-white/5 border border-white/10 overflow-hidden transition-all duration-300 hover:border-cyan-500/30"
               >
                 <button
@@ -111,7 +127,7 @@ export const FaqSection: React.FC<FaqSectionProps> = ({ faqs }) => {
                     </motion.div>
                   )}
                 </AnimatePresence>
-              </div>
+              </motion.div>
             );
           })}
         </div>
