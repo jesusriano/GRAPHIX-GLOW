@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <defs>
+    <linearGradient id="nhGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10b981" />
+      <stop offset="100%" stop-color="#059669" />
+    </linearGradient>
+    <linearGradient id="nhGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#34d399" />
+      <stop offset="100%" stop-color="#10b981" />
+    </linearGradient>
+  </defs>
+  <rect width="100" height="100" rx="24" fill="#022c22" />
+  <rect x="2" y="2" width="96" height="96" rx="22" fill="none" stroke="#10b981" stroke-width="2" stroke-opacity="0.3" />
+  <path d="M50 22 C34.5 22 22 34.5 22 50 C22 65.5 34.5 78 50 78 C65.5 78 78 65.5 78 50 C78 34.5 65.5 22 50 22 Z" fill="none" stroke="url(#nhGrad)" stroke-width="4" stroke-dasharray="1 3" />
+  <path d="M50 28 V72 M28 50 H72" stroke="url(#nhGlow)" stroke-width="7" stroke-linecap="round" />
+  <path d="M32 50 L42 50 L46 38 L52 62 L57 44 L61 50 L68 50" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+</svg>

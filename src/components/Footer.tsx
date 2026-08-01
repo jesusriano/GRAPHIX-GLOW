@@ -12,7 +12,9 @@ import {
   Sparkles
 } from 'lucide-react';
 import { BrandLogo } from './BrandLogo';
-import founderPhoto from '../assets/images/jesus_riano_founder_1785356395649.jpg';
+import { OptimizedImage } from './OptimizedImage';
+import { NewsletterSection } from './NewsletterSection';
+import founderPhoto from '../assets/images/regenerated_image_1785569753971.jpg';
 
 interface FooterProps {
   onOpenQuote: () => void;
@@ -54,6 +56,9 @@ export const Footer: React.FC<FooterProps> = React.memo(({ onOpenQuote, onNaviga
   return (
     <footer className="relative bg-[#02040A] text-slate-400 border-t border-cyan-500/20 overflow-hidden font-sans pt-16 pb-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        {/* Minimalist Newsletter Form */}
+        <NewsletterSection />
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 mb-16">
           {/* Column 1: Brand */}
           <div className="lg:col-span-2 space-y-4">
@@ -89,7 +94,7 @@ export const Footer: React.FC<FooterProps> = React.memo(({ onOpenQuote, onNaviga
               <li><button onClick={(e) => handleLink('hero', e)} className="hover:text-cyan-300 transition cursor-pointer">Inicio</button></li>
               <li><button onClick={(e) => handleLink('about', e)} className="hover:text-cyan-300 transition cursor-pointer">Quiénes Somos</button></li>
               <li><button onClick={(e) => handleLink('services', e)} className="hover:text-cyan-300 transition cursor-pointer">Servicios</button></li>
-              <li><button onClick={(e) => handleLink('portfolio', e)} className="hover:text-cyan-300 transition cursor-pointer">Casos de Éxito</button></li>
+              <li><button onClick={(e) => handleLink('portfolio', e)} className="hover:text-cyan-300 transition cursor-pointer">Portafolio</button></li>
               <li><button onClick={(e) => handleLink('pricing', e)} className="hover:text-cyan-300 transition cursor-pointer">Planes & Cotización</button></li>
               <li><button onClick={(e) => handleLink('blog', e)} className="hover:text-cyan-300 transition cursor-pointer">Blog SEO</button></li>
               <li><button onClick={(e) => handleLink('contact', e)} className="hover:text-cyan-300 transition cursor-pointer">Contacto Directo</button></li>
@@ -141,11 +146,11 @@ export const Footer: React.FC<FooterProps> = React.memo(({ onOpenQuote, onNaviga
             <span className="hidden sm:inline text-slate-700">|</span>
             <div className="inline-flex items-center gap-2 bg-slate-900/90 border border-cyan-500/30 px-3 py-1.5 rounded-full text-slate-300">
               {!imgError && founderPhoto ? (
-                <img 
+                <OptimizedImage 
                   src={founderPhoto} 
                   alt="Jesús Riaño - Fundador y CEO" 
-                  referrerPolicy="no-referrer"
-                  onError={() => setImgError(true)}
+                  width={20}
+                  height={20}
                   className="w-5 h-5 rounded-full object-cover border border-cyan-400"
                 />
               ) : (

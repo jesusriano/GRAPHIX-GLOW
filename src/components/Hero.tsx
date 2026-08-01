@@ -55,18 +55,18 @@ export const Hero: React.FC<HeroProps> = React.memo(({
       onMouseMove={handleMouseMove}
       className="relative min-h-screen mt-[-6vh] sm:mt-0 pt-20 sm:pt-32 pb-16 flex flex-col justify-center overflow-hidden"
     >
-      {/* Background Animated Radial Glow Spheres */}
+      {/* Background Radial Glow Spheres */}
       <div
-        className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[550px] bg-gradient-to-tr from-cyan-500/25 via-blue-600/20 to-indigo-600/15 rounded-full blur-[130px] pointer-events-none animate-pulse"
+        className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[550px] bg-gradient-to-tr from-cyan-500/25 via-blue-600/20 to-indigo-600/15 rounded-full blur-3xl pointer-events-none"
       />
       <div
-        className="absolute bottom-1/4 right-10 w-[450px] h-[450px] bg-gradient-to-br from-indigo-500/20 via-purple-600/15 to-cyan-500/20 rounded-full blur-[120px] pointer-events-none animate-pulse"
+        className="absolute bottom-1/4 right-10 w-[450px] h-[450px] bg-gradient-to-br from-indigo-500/20 via-purple-600/15 to-cyan-500/20 rounded-full blur-3xl pointer-events-none"
       />
 
-      {/* Subtle Animated Geometric SVG Background Pattern Layer */}
+      {/* Subtle Geometric SVG Background Pattern Layer */}
       <div className="absolute inset-0 opacity-[0.07] pointer-events-none overflow-hidden flex items-center justify-center">
         <div
-          className="w-[1200px] h-[1200px] animate-[spin_120s_linear_infinite] will-change-transform"
+          className="w-[1200px] h-[1200px]"
         >
           <svg className="w-full h-full text-cyan-400" viewBox="0 0 100 100" fill="none">
             <defs>
@@ -165,7 +165,7 @@ export const Hero: React.FC<HeroProps> = React.memo(({
                 onClick={onOpenPortfolio}
                 className="px-8 py-4 rounded-2xl bg-white/5 hover:bg-white/10 text-slate-200 hover:text-white font-semibold text-base border border-cyan-500/30 backdrop-blur-md transition-all hover:border-cyan-400 hover:shadow-[0_0_25px_rgba(0,210,255,0.25)] flex items-center justify-center gap-2 cursor-pointer"
               >
-                <span>Ver Casos de Éxito</span>
+                <span>Ver Portafolio</span>
                 <ChevronRight className="w-4 h-4 text-cyan-400" />
               </button>
             </motion.div>

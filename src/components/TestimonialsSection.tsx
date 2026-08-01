@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Testimonial, ClientLogo } from '../types';
+import { OptimizedImage } from './OptimizedImage';
 import { 
   Sparkles, 
   Star, 
@@ -17,15 +18,97 @@ import {
 } from 'lucide-react';
 
 interface TestimonialsSectionProps {
-  testimonials: Testimonial[];
-  clientLogos: ClientLogo[];
+  testimonials?: Testimonial[];
+  clientLogos?: ClientLogo[];
+  isLoading?: boolean;
 }
 
+export const TestimonialsSkeleton: React.FC = () => {
+  return (
+    <section className="py-24 relative overflow-hidden bg-[#030712]/60">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        {/* Header Skeleton */}
+        <div className="text-center max-w-3xl mx-auto mb-16">
+          <div className="h-7 w-48 rounded-full bg-slate-800/60 animate-pulse mx-auto mb-4" />
+          <div className="h-10 w-3/4 max-w-md rounded-2xl bg-slate-800/80 animate-pulse mx-auto mb-4" />
+          <div className="h-5 w-2/3 max-w-sm rounded-xl bg-slate-800/50 animate-pulse mx-auto" />
+        </div>
+
+        {/* Carousel Skeleton */}
+        <div className="max-w-4xl mx-auto relative mb-20">
+          <div className="p-8 sm:p-12 rounded-3xl bg-slate-900/80 border border-slate-800/80 backdrop-blur-xl relative shadow-2xl animate-pulse">
+            <div className="w-12 h-12 rounded-xl bg-slate-800/80 absolute top-6 right-8" />
+
+            {/* Stars */}
+            <div className="flex items-center gap-1.5 mb-6">
+              {[...Array(5)].map((_, i) => (
+                <div key={i} className="w-5 h-5 rounded-full bg-slate-800" />
+              ))}
+            </div>
+
+            {/* Quote Lines */}
+            <div className="space-y-3 mb-8">
+              <div className="h-5 w-full bg-slate-800/70 rounded-lg" />
+              <div className="h-5 w-11/12 bg-slate-800/70 rounded-lg" />
+              <div className="h-5 w-3/4 bg-slate-800/70 rounded-lg" />
+            </div>
+
+            {/* User Footer */}
+            <div className="flex items-center gap-4 pt-6 border-t border-slate-800/80">
+              <div className="w-14 h-14 rounded-full bg-slate-800 shrink-0" />
+              <div className="space-y-2">
+                <div className="h-4 w-36 bg-slate-800 rounded-md" />
+                <div className="h-3 w-48 bg-slate-800/60 rounded-md" />
+                <div className="h-2.5 w-24 bg-slate-800/40 rounded-md" />
+              </div>
+            </div>
+          </div>
+
+          {/* Controls Skeleton */}
+          <div className="flex items-center justify-center gap-4 mt-8">
+            <div className="w-11 h-11 rounded-full bg-slate-800/80 animate-pulse" />
+            <div className="h-4 w-12 rounded bg-slate-800/60 animate-pulse" />
+            <div className="w-11 h-11 rounded-full bg-slate-800/80 animate-pulse" />
+          </div>
+        </div>
+
+        {/* Client Logos Grid Skeleton */}
+        <div className="text-center pt-8 border-t border-white/10">
+          <div className="h-7 w-72 rounded-full bg-slate-800/60 animate-pulse mx-auto mb-10" />
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[...Array(6)].map((_, idx) => (
+              <div
+                key={idx}
+                className="p-5 rounded-2xl bg-slate-900/60 border border-slate-800/80 animate-pulse flex items-center justify-between gap-4"
+              >
+                <div className="flex items-center gap-3.5">
+                  <div className="w-12 h-12 rounded-xl bg-slate-800 shrink-0" />
+                  <div className="space-y-2">
+                    <div className="h-4 w-28 bg-slate-800 rounded-md" />
+                    <div className="h-3 w-20 bg-slate-800/60 rounded-md" />
+                  </div>
+                </div>
+                <div className="h-5 w-16 rounded-full bg-slate-800/60 shrink-0" />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
 export const TestimonialsSection: React.FC<TestimonialsSectionProps> = React.memo(({
-  testimonials,
-  clientLogos
+  testimonials = [],
+  clientLogos = [],
+  isLoading = false
 }) => {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
+
+  if (isLoading || testimonials.length === 0) {
+    return <TestimonialsSkeleton />;
+  }
 
   const handleNext = () => {
     setCurrentIndex((prev) => (prev + 1) % testimonials.length);
@@ -104,14 +187,11 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = React.mem
 
               {/* User details */}
               <div className="flex items-center gap-4 pt-6 border-t border-white/10">
-                <img
+                <OptimizedImage
                   src={current.avatar}
                   alt={current.clientName}
-                  loading="lazy"
-                  decoding="async"
                   width={56}
                   height={56}
-                  referrerPolicy="no-referrer"
                   className="w-14 h-14 rounded-full object-cover border-2 border-cyan-400 shadow-[0_0_15px_rgba(0,210,255,0.4)]"
                 />
                 <div>
@@ -161,8 +241,21 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = React.mem
                 className={`group px-6 py-5 rounded-2xl bg-gradient-to-br from-slate-900/90 via-slate-950 to-slate-900/90 border border-white/10 ${client.borderColor || 'hover:border-cyan-500/50'} backdrop-blur-md transition-all duration-300 ${client.glowColor || 'hover:shadow-[0_0_25px_rgba(0,210,255,0.3)]'} flex items-center justify-between gap-4 cursor-default relative overflow-hidden`}
               >
                 <div className="flex items-center gap-3.5 text-left">
-                  <div className={`p-3 rounded-xl border ${client.iconBg || 'bg-cyan-500/20 text-cyan-400 border-cyan-500/30'} group-hover:scale-110 transition-transform duration-300 shrink-0`}>
-                    {getClientIcon(client.iconName)}
+                  <div className={`p-2 rounded-xl border ${client.iconBg || 'bg-cyan-500/20 text-cyan-400 border-cyan-500/30'} group-hover:scale-105 transition-transform duration-300 shrink-0 w-12 h-12 flex items-center justify-center overflow-hidden bg-slate-950`}>
+                    {client.logoUrl ? (
+                      <OptimizedImage
+                        src={client.logoUrl}
+                        alt={client.name}
+                        width={48}
+                        height={48}
+                        mobileWidth={100}
+                        desktopWidth={200}
+                        sizes="48px"
+                        className="w-full h-full object-contain rounded-lg"
+                      />
+                    ) : (
+                      getClientIcon(client.iconName)
+                    )}
                   </div>
                   <div>
                     <h4 className={`text-base font-extrabold ${client.textColor || 'text-white'} tracking-tight`}>

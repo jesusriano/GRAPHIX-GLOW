@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
+import { OptimizedImage } from './OptimizedImage';
 import { 
   Target, 
   Eye, 
@@ -12,7 +13,7 @@ import {
 } from 'lucide-react';
 
 // Import Founder Image
-import founderPhoto from '../assets/images/jesus_riano_founder_1785356395649.jpg';
+import founderPhoto from '../assets/images/regenerated_image_1785569753971.jpg';
 
 export const AboutSection: React.FC = () => {
   const [imgError, setImgError] = React.useState(false);
@@ -92,15 +93,11 @@ export const AboutSection: React.FC = () => {
                     <span className="text-xs text-cyan-300 font-mono mt-1">Fundador & CEO</span>
                   </div>
                 ) : (
-                  <img
+                  <OptimizedImage
                     src={founderPhoto}
                     alt="Jesús Riaño - Fundador y CEO de Graphix Glow"
-                    loading="lazy"
-                    decoding="async"
                     width={600}
                     height={800}
-                    referrerPolicy="no-referrer"
-                    onError={() => setImgError(true)}
                     className="w-full h-full object-cover object-[center_20%] group-hover:scale-105 transition-transform duration-700 ease-out"
                   />
                 )}

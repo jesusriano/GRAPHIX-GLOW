@@ -36,6 +36,7 @@ export interface PortfolioProject {
   liveUrl?: string;
   year: string;
   featured?: boolean;
+  logoUrl?: string;
 }
 
 export interface BlogPost {

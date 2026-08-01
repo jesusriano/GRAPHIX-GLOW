@@ -11,12 +11,18 @@ export const AiHolographicCore: React.FC<AiHolographicCoreProps> = React.memo(({
   const mousePos = useRef({ x: 0, y: 0, targetX: 0, targetY: 0 });
 
   useEffect(() => {
+    // Respect prefers-reduced-motion
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      return;
+    }
+
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
     let animationFrameId: number;
+    let isVisible = true;
     let width = (canvas.width = canvas.offsetWidth * window.devicePixelRatio);
     let height = (canvas.height = canvas.offsetHeight * window.devicePixelRatio);
 
@@ -38,8 +44,24 @@ export const AiHolographicCore: React.FC<AiHolographicCoreProps> = React.memo(({
 
     const parent = canvas.parentElement;
     if (parent) {
-      parent.addEventListener('mousemove', handleMouseMove);
+      parent.addEventListener('mousemove', handleMouseMove, { passive: true });
     }
+
+    // IntersectionObserver to pause when off-screen
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const wasVisible = isVisible;
+          isVisible = entry.isIntersecting;
+          if (isVisible && !wasVisible) {
+            cancelAnimationFrame(animationFrameId);
+            animationFrameId = requestAnimationFrame(render);
+          }
+        });
+      },
+      { threshold: 0 }
+    );
+    observer.observe(canvas);
 
     // 3D Particles Swarm
     const particleCount = 35;
@@ -83,10 +105,12 @@ export const AiHolographicCore: React.FC<AiHolographicCoreProps> = React.memo(({
     let lastRenderTime = 0;
 
     const render = (timeMs: number) => {
+      if (!isVisible) return;
+
       animationFrameId = requestAnimationFrame(render);
 
       // Frame rate throttle to ~30fps to keep main thread completely unblocked
-      if (timeMs - lastRenderTime < 30) return;
+      if (timeMs - lastRenderTime < 33) return;
       lastRenderTime = timeMs;
 
       time += 0.025;
@@ -260,13 +284,14 @@ export const AiHolographicCore: React.FC<AiHolographicCoreProps> = React.memo(({
       if (parent) {
         parent.removeEventListener('mousemove', handleMouseMove);
       }
+      observer.disconnect();
     };
   }, []);
 
   return (
     <div className="relative w-full aspect-square max-w-[500px] lg:max-w-[560px] mx-auto flex items-center justify-center select-none">
       {/* Dynamic Background Glow Halo */}
-      <div className="absolute inset-0 bg-gradient-to-tr from-cyan-500/20 via-blue-600/20 to-indigo-600/15 rounded-full blur-[80px] pointer-events-none animate-pulse" />
+      <div className="absolute inset-0 bg-gradient-to-tr from-cyan-500/20 via-blue-600/20 to-indigo-600/15 rounded-full blur-2xl pointer-events-none" />
 
       {/* Main Interactive Canvas */}
       <canvas

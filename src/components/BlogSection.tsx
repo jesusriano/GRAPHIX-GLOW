@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { BlogPost, Comment } from '../types';
+import { OptimizedImage } from './OptimizedImage';
 import { 
   Sparkles, 
   Clock, 
@@ -18,15 +19,87 @@ import {
 } from 'lucide-react';
 
 interface BlogSectionProps {
-  posts: BlogPost[];
+  posts?: BlogPost[];
+  isLoading?: boolean;
 }
 
-export const BlogSection: React.FC<BlogSectionProps> = React.memo(({ posts }) => {
+export const BlogSkeleton: React.FC = () => {
+  return (
+    <section id="blog" className="py-24 relative overflow-hidden bg-[#030712]/70">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        {/* Header Skeleton */}
+        <div className="text-center max-w-3xl mx-auto mb-12">
+          <div className="h-7 w-44 rounded-full bg-slate-800/60 animate-pulse mx-auto mb-4" />
+          <div className="h-10 w-2/3 max-w-md rounded-2xl bg-slate-800/80 animate-pulse mx-auto mb-4" />
+          <div className="h-5 w-3/4 max-w-lg rounded-xl bg-slate-800/50 animate-pulse mx-auto" />
+        </div>
+
+        {/* Category & Search Controls Skeleton */}
+        <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-12">
+          <div className="flex items-center gap-2 overflow-hidden w-full md:w-auto">
+            {[...Array(6)].map((_, idx) => (
+              <div key={idx} className="h-9 w-24 rounded-xl bg-slate-800/70 animate-pulse shrink-0" />
+            ))}
+          </div>
+          <div className="h-9 w-full md:w-64 rounded-xl bg-slate-800/70 animate-pulse shrink-0" />
+        </div>
+
+        {/* Blog Cards Grid Skeleton */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {[...Array(4)].map((_, idx) => (
+            <div
+              key={idx}
+              className="rounded-3xl bg-slate-900/70 border border-slate-800/80 animate-pulse overflow-hidden flex flex-col justify-between h-[480px]"
+            >
+              {/* Image Box */}
+              <div className="h-60 bg-slate-800/80 relative p-4 flex justify-between items-start">
+                <div className="h-6 w-20 rounded-full bg-slate-700/80" />
+                <div className="h-4 w-28 rounded bg-slate-700/60 self-end" />
+              </div>
+
+              {/* Content Body */}
+              <div className="p-6 flex-1 flex flex-col justify-between">
+                <div>
+                  <div className="h-6 w-5/6 bg-slate-800 rounded-lg mb-3" />
+                  <div className="h-6 w-2/3 bg-slate-800/60 rounded-lg mb-6" />
+                  <div className="space-y-2 mb-6">
+                    <div className="h-3.5 w-full bg-slate-800/50 rounded" />
+                    <div className="h-3.5 w-11/12 bg-slate-800/50 rounded" />
+                    <div className="h-3.5 w-3/4 bg-slate-800/50 rounded" />
+                  </div>
+                </div>
+
+                {/* Author footer */}
+                <div className="flex items-center justify-between pt-4 border-t border-slate-800/80">
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-full bg-slate-800 shrink-0" />
+                    <div className="space-y-1">
+                      <div className="h-3.5 w-24 bg-slate-800 rounded" />
+                      <div className="h-2.5 w-16 bg-slate-800/50 rounded" />
+                    </div>
+                  </div>
+
+                  <div className="h-4 w-20 bg-slate-800/80 rounded" />
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export const BlogSection: React.FC<BlogSectionProps> = React.memo(({ posts = [], isLoading = false }) => {
   const [selectedCategory, setSelectedCategory] = useState<string>('Todas');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [activePost, setActivePost] = useState<BlogPost | null>(null);
   const [showSchemaViewer, setShowSchemaViewer] = useState<boolean>(false);
   const [copiedShare, setCopiedShare] = useState<boolean>(false);
+
+  if (isLoading) {
+    return <BlogSkeleton />;
+  }
 
   // Comments state per post
   const [commentsMap, setCommentsMap] = useState<Record<string, Comment[]>>({
@@ -168,11 +241,9 @@ export const BlogSection: React.FC<BlogSectionProps> = React.memo(({ posts }) =>
               className="group rounded-3xl bg-gradient-to-b from-white/10 to-white/5 border border-white/10 hover:border-cyan-500/50 backdrop-blur-xl overflow-hidden cursor-pointer transition-all duration-300 hover:shadow-[0_0_35px_rgba(0,210,255,0.2)] flex flex-col justify-between"
             >
               <div className="relative h-60 overflow-hidden">
-                <img
+                <OptimizedImage
                   src={post.featuredImage}
                   alt={post.title}
-                  loading="lazy"
-                  decoding="async"
                   width={800}
                   height={450}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-80 group-hover:opacity-100"
@@ -205,11 +276,9 @@ export const BlogSection: React.FC<BlogSectionProps> = React.memo(({ posts }) =>
                 {/* Author footer */}
                 <div className="flex items-center justify-between pt-4 border-t border-white/10">
                   <div className="flex items-center gap-3">
-                    <img
+                    <OptimizedImage
                       src={post.author.avatar}
                       alt={post.author.name}
-                      loading="lazy"
-                      decoding="async"
                       width={32}
                       height={32}
                       className="w-8 h-8 rounded-full object-cover border border-cyan-400"
@@ -265,9 +334,11 @@ export const BlogSection: React.FC<BlogSectionProps> = React.memo(({ posts }) =>
 
               <div className="flex flex-wrap items-center gap-4 text-xs text-slate-400 pb-6 mb-6 border-b border-white/10">
                 <div className="flex items-center gap-2">
-                  <img
+                  <OptimizedImage
                     src={activePost.author.avatar}
                     alt={activePost.author.name}
+                    width={24}
+                    height={24}
                     className="w-6 h-6 rounded-full object-cover"
                   />
                   <span className="text-slate-200 font-medium">{activePost.author.name}</span>
@@ -302,11 +373,9 @@ export const BlogSection: React.FC<BlogSectionProps> = React.memo(({ posts }) =>
 
               {/* Featured Image */}
               <div className="rounded-2xl overflow-hidden h-72 sm:h-96 mb-8">
-                <img
+                <OptimizedImage
                   src={activePost.featuredImage}
                   alt={activePost.title}
-                  loading="lazy"
-                  decoding="async"
                   width={800}
                   height={450}
                   className="w-full h-full object-cover"

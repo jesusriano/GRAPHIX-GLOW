@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { PortfolioProject, CategoryType } from '../types';
+import { OptimizedImage } from './OptimizedImage';
 import { 
   Sparkles, 
   ExternalLink, 
@@ -8,7 +9,8 @@ import {
   CheckCircle2, 
   X, 
   Calendar, 
-  Tag 
+  Tag,
+  Building2
 } from 'lucide-react';
 
 interface PortfolioSectionProps {
@@ -48,7 +50,7 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = React.memo(({
         >
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-xs font-mono uppercase tracking-widest mb-4">
             <Sparkles className="w-3.5 h-3.5" />
-            <span>Casos de Éxito</span>
+            <span>Portafolio de Proyectos</span>
           </div>
 
           <h2 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight mb-4">
@@ -100,21 +102,32 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = React.memo(({
             >
               {/* Image Preview */}
               <div className="relative h-64 overflow-hidden">
-                <img
+                <OptimizedImage
                   src={project.image}
                   alt={project.title}
-                  loading="lazy"
-                  decoding="async"
                   width={800}
                   height={600}
-                  referrerPolicy="no-referrer"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-80 group-hover:opacity-100"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#050B14] via-[#050B14]/40 to-transparent" />
 
                 <div className="absolute top-4 left-4">
-                  <span className="px-3 py-1 rounded-full bg-cyan-950/80 border border-cyan-400/40 text-cyan-300 text-xs font-mono uppercase backdrop-blur-md">
-                    {project.client}
+                  <span className="px-3 py-1.5 rounded-full bg-slate-950/90 border border-cyan-400/40 text-cyan-300 text-xs font-mono uppercase backdrop-blur-md flex items-center gap-2 shadow-lg">
+                    {project.logoUrl ? (
+                      <OptimizedImage
+                        src={project.logoUrl}
+                        alt={project.client}
+                        width={16}
+                        height={16}
+                        mobileWidth={50}
+                        desktopWidth={100}
+                        sizes="16px"
+                        className="w-4 h-4 object-contain rounded-sm"
+                      />
+                    ) : (
+                      <Building2 className="w-4 h-4 text-cyan-400" />
+                    )}
+                    <span>{project.client}</span>
                   </span>
                 </div>
 
@@ -171,8 +184,22 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = React.memo(({
               </button>
 
               <div className="mb-4">
-                <span className="px-3 py-1 rounded-full bg-cyan-500/20 border border-cyan-500/30 text-cyan-300 text-xs font-mono uppercase">
-                  {activeProject.client} • {activeProject.year}
+                <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-cyan-500/20 border border-cyan-500/30 text-cyan-300 text-xs font-mono uppercase">
+                  {activeProject.logoUrl ? (
+                    <OptimizedImage
+                      src={activeProject.logoUrl}
+                      alt={activeProject.client}
+                      width={16}
+                      height={16}
+                      mobileWidth={50}
+                      desktopWidth={100}
+                      sizes="16px"
+                      className="w-4 h-4 object-contain rounded-sm"
+                    />
+                  ) : (
+                    <Building2 className="w-4 h-4 text-cyan-400" />
+                  )}
+                  <span>{activeProject.client} • {activeProject.year}</span>
                 </span>
               </div>
 
@@ -181,10 +208,11 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = React.memo(({
               </h3>
 
               <div className="rounded-2xl overflow-hidden mb-6 h-64">
-                <img
+                <OptimizedImage
                   src={activeProject.image}
                   alt={activeProject.title}
-                  referrerPolicy="no-referrer"
+                  width={800}
+                  height={600}
                   className="w-full h-full object-cover"
                 />
               </div>

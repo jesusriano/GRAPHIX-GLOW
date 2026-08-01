@@ -4,10 +4,15 @@ export const BackgroundParticles: React.FC = React.memo(() => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
+    // Respect user prefers-reduced-motion setting
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      return;
+    }
+
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext('2d', { alpha: true });
     if (!ctx) return;
 
     let animationFrameId: number;
@@ -27,7 +32,7 @@ export const BackgroundParticles: React.FC = React.memo(() => {
 
     const handleMouseMove = (e: MouseEvent) => {
       const now = Date.now();
-      if (now - lastMouseTime < 33) return; // ~30fps throttle
+      if (now - lastMouseTime < 50) return; // ~20fps throttle for mouse tracking
       lastMouseTime = now;
       mouseX = e.clientX;
       mouseY = e.clientY;
@@ -35,17 +40,26 @@ export const BackgroundParticles: React.FC = React.memo(() => {
 
     const handleVisibilityChange = () => {
       isVisible = !document.hidden;
+      if (isVisible) {
+        cancelAnimationFrame(animationFrameId);
+        animationFrameId = requestAnimationFrame(render);
+      }
     };
 
     window.addEventListener('resize', handleResize, { passive: true });
     window.addEventListener('mousemove', handleMouseMove, { passive: true });
     document.addEventListener('visibilitychange', handleVisibilityChange);
 
-    // IntersectionObserver to pause when not visible
+    // IntersectionObserver to completely stop rAF when canvas is off-screen
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
+          const wasVisible = isVisible;
           isVisible = entry.isIntersecting;
+          if (isVisible && !wasVisible) {
+            cancelAnimationFrame(animationFrameId);
+            animationFrameId = requestAnimationFrame(render);
+          }
         });
       },
       { threshold: 0 }
@@ -54,7 +68,7 @@ export const BackgroundParticles: React.FC = React.memo(() => {
 
     // Initial tech energy rain phase: first 2.5 seconds descending particles
     const startTime = Date.now();
-    const particleCount = Math.min(Math.floor(width / 35), 32);
+    const particleCount = Math.min(Math.floor(width / 45), 24);
 
     interface Particle {
       x: number;
@@ -72,16 +86,16 @@ export const BackgroundParticles: React.FC = React.memo(() => {
     const particles: Particle[] = [];
 
     for (let i = 0; i < particleCount; i++) {
-      const initialFallSpeed = 2.5 + Math.random() * 3.5;
+      const initialFallSpeed = 2.0 + Math.random() * 3.0;
       particles.push({
         x: Math.random() * width,
         y: Math.random() * -height - 50,
-        vx: (Math.random() - 0.5) * 0.4,
+        vx: (Math.random() - 0.5) * 0.3,
         vy: initialFallSpeed,
         initialVy: initialFallSpeed,
-        radius: Math.random() * 2 + 1,
+        radius: Math.random() * 1.8 + 1,
         color: colors[Math.floor(Math.random() * colors.length)],
-        alpha: Math.random() * 0.6 + 0.2,
+        alpha: Math.random() * 0.5 + 0.2,
         pulseSpeed: 0.01 + Math.random() * 0.02
       });
     }
@@ -89,12 +103,12 @@ export const BackgroundParticles: React.FC = React.memo(() => {
     let lastTime = 0;
 
     const render = (time: number) => {
-      animationFrameId = requestAnimationFrame(render);
-
       if (!isVisible) return;
 
-      // Throttle canvas rendering to ~30fps to free up main thread
-      if (time - lastTime < 30) return;
+      animationFrameId = requestAnimationFrame(render);
+
+      // Throttle canvas rendering to ~24fps to free main thread
+      if (time - lastTime < 40) return;
       lastTime = time;
 
       ctx.clearRect(0, 0, width, height);
@@ -103,9 +117,9 @@ export const BackgroundParticles: React.FC = React.memo(() => {
       const settlingFactor = Math.max(0, 1 - elapsed / 3.0);
 
       // Single-path Tech Grid Background
-      ctx.strokeStyle = 'rgba(0, 210, 255, 0.03)';
+      ctx.strokeStyle = 'rgba(0, 210, 255, 0.025)';
       ctx.lineWidth = 1;
-      const gridSize = 80;
+      const gridSize = 100;
 
       ctx.beginPath();
       for (let x = 0; x < width; x += gridSize) {
@@ -122,12 +136,12 @@ export const BackgroundParticles: React.FC = React.memo(() => {
       const nowMs = Date.now();
       for (let i = 0; i < particles.length; i++) {
         const p = particles[i];
-        const currentVy = (p.initialVy * settlingFactor) + ((Math.random() - 0.5) * 0.3 * (1 - settlingFactor));
+        const currentVy = (p.initialVy * settlingFactor) + ((Math.random() - 0.5) * 0.2 * (1 - settlingFactor));
         p.y += currentVy;
         p.x += p.vx;
 
-        p.alpha += Math.sin(nowMs * p.pulseSpeed) * 0.01;
-        p.alpha = Math.max(0.15, Math.min(0.85, p.alpha));
+        p.alpha += Math.sin(nowMs * p.pulseSpeed) * 0.008;
+        p.alpha = Math.max(0.15, Math.min(0.75, p.alpha));
 
         if (p.x < 0) p.x = width;
         if (p.x > width) p.x = 0;
@@ -145,8 +159,8 @@ export const BackgroundParticles: React.FC = React.memo(() => {
         if (distSq < 22500) { // 150px
           const dist = Math.sqrt(distSq);
           const factor = 1 - dist / 150;
-          renderRadius += factor * 2;
-          renderAlpha = Math.min(1, renderAlpha + factor * 0.4);
+          renderRadius += factor * 1.5;
+          renderAlpha = Math.min(1, renderAlpha + factor * 0.3);
         }
 
         ctx.globalAlpha = renderAlpha;
@@ -154,20 +168,11 @@ export const BackgroundParticles: React.FC = React.memo(() => {
         ctx.beginPath();
         ctx.arc(p.x, p.y, renderRadius, 0, Math.PI * 2);
         ctx.fill();
-
-        if (settlingFactor > 0.1) {
-          ctx.strokeStyle = p.color;
-          ctx.lineWidth = renderRadius * 0.8;
-          ctx.beginPath();
-          ctx.moveTo(p.x, p.y);
-          ctx.lineTo(p.x - p.vx * 3, p.y - currentVy * 4);
-          ctx.stroke();
-        }
       }
 
       // Fast squared-distance check for node connecting lines
       ctx.strokeStyle = '#00D2FF';
-      ctx.lineWidth = 0.6;
+      ctx.lineWidth = 0.5;
 
       for (let i = 0; i < particles.length; i++) {
         const p1 = particles[i];
@@ -177,9 +182,9 @@ export const BackgroundParticles: React.FC = React.memo(() => {
           const dy = p1.y - p2.y;
           const distSq = dx * dx + dy * dy;
 
-          if (distSq < 12100) { // 110px
+          if (distSq < 10000) { // 100px
             const dist = Math.sqrt(distSq);
-            ctx.globalAlpha = (1 - dist / 110) * 0.18;
+            ctx.globalAlpha = (1 - dist / 100) * 0.15;
             ctx.beginPath();
             ctx.moveTo(p1.x, p1.y);
             ctx.lineTo(p2.x, p2.y);

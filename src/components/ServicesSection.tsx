@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
+import { OptimizedImage } from './OptimizedImage';
 import { 
   ServiceItem, 
   CategoryType 
@@ -165,10 +166,11 @@ export const ServicesSection: React.FC<ServicesSectionProps> = React.memo(({
               >
                 {/* Service Card Image Header */}
                 <div className="relative h-48 overflow-hidden">
-                  <img
+                  <OptimizedImage
                     src={service.image}
                     alt={service.title}
-                    referrerPolicy="no-referrer"
+                    width={800}
+                    height={500}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-80 group-hover:opacity-100"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#050B14] via-[#050B14]/40 to-transparent" />

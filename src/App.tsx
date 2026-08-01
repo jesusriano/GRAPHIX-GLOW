@@ -5,10 +5,13 @@ import { Header } from './components/Header';
 import { Hero } from './components/Hero';
 import { Footer } from './components/Footer';
 import { InViewDeferred } from './components/InViewDeferred';
-import { Sparkles, ArrowRight, ShieldCheck, Zap } from 'lucide-react';
+import { Sparkles } from 'lucide-react';
 
-import founderPhoto from './assets/images/jesus_riano_founder_1785356395649.jpg';
-import logoPhoto from './assets/images/jr_graphixglow_logo_1785360293197.jpg';
+import founderPhoto from './assets/images/regenerated_image_1785569753971.jpg';
+import logoPhoto from './assets/images/regenerated_image_1785569587116.jpg';
+
+import { TestimonialsSkeleton } from './components/TestimonialsSection';
+import { BlogSkeleton } from './components/BlogSection';
 
 import { 
   INITIAL_SERVICES, 
@@ -22,12 +25,9 @@ import {
 
 // Lazy loaded components & major page sections for bundle optimization
 const BackgroundParticles = lazy(() => import('./components/BackgroundParticles').then(m => ({ default: m.BackgroundParticles })));
-const AiAgentSimulator = lazy(() => import('./components/AiAgentSimulator').then(m => ({ default: m.AiAgentSimulator })));
-const RoiCalculator = lazy(() => import('./components/RoiCalculator').then(m => ({ default: m.RoiCalculator })));
 const AboutSection = lazy(() => import('./components/AboutSection').then(m => ({ default: m.AboutSection })));
 const ServicesSection = lazy(() => import('./components/ServicesSection').then(m => ({ default: m.ServicesSection })));
 const PortfolioSection = lazy(() => import('./components/PortfolioSection').then(m => ({ default: m.PortfolioSection })));
-const SuccessStoriesSection = lazy(() => import('./components/SuccessStoriesSection').then(m => ({ default: m.SuccessStoriesSection })));
 const ProcessSection = lazy(() => import('./components/ProcessSection').then(m => ({ default: m.ProcessSection })));
 const PricingSection = lazy(() => import('./components/PricingSection').then(m => ({ default: m.PricingSection })));
 const TestimonialsSection = lazy(() => import('./components/TestimonialsSection').then(m => ({ default: m.TestimonialsSection })));
@@ -191,18 +191,9 @@ export default function App() {
               {/* 1. INICIO (HOME PAGE) */}
               {activeSection === 'hero' && (
                 <div className="space-y-16 pb-16 relative overflow-hidden">
-                  {/* Dynamic animated background ambient wash to prevent pale background without interfering with intro */}
-                  <motion.div
-                    animate={{
-                      opacity: [0.3, 0.5, 0.3],
-                      scale: [1, 1.05, 1],
-                    }}
-                    transition={{
-                      duration: 8,
-                      repeat: Infinity,
-                      ease: 'easeInOut',
-                    }}
-                    className="absolute -top-40 left-1/2 -translate-x-1/2 w-[1000px] h-[600px] bg-gradient-to-b from-cyan-500/10 via-blue-600/10 to-transparent rounded-full blur-[140px] pointer-events-none -z-10"
+                  {/* Background ambient wash */}
+                  <div
+                    className="absolute -top-40 left-1/2 -translate-x-1/2 w-[1000px] h-[500px] bg-gradient-to-b from-cyan-500/10 via-blue-600/10 to-transparent rounded-full blur-3xl pointer-events-none -z-10"
                   />
                   <Hero
                     onOpenQuote={() => {
@@ -213,121 +204,13 @@ export default function App() {
                     onOpenAiChat={() => setIsAiChatOpen(true)}
                   />
 
-                  {/* Quick Highlight Preview: Key Pillars */}
-                  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="text-center max-w-3xl mx-auto mb-12">
-                      <span className="text-xs font-mono text-cyan-400 uppercase tracking-widest bg-cyan-500/10 border border-cyan-500/30 px-3.5 py-1.5 rounded-full inline-flex items-center gap-2 mb-3">
-                        <Sparkles className="w-3.5 h-3.5" />
-                        <span>Por Qué Elegir Graphix Glow</span>
-                      </span>
-                      <h2 className="text-3xl sm:text-4xl font-black text-white">
-                        Especialistas en Desarrollo Web & Agentes de IA
-                      </h2>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                      <div className="p-6 rounded-3xl bg-slate-950/80 border border-cyan-500/20 backdrop-blur-xl shadow-xl hover:border-cyan-400/50 transition group">
-                        <div className="w-12 h-12 rounded-2xl bg-cyan-500/20 border border-cyan-400/40 flex items-center justify-center text-cyan-300 mb-4 group-hover:scale-110 transition-transform">
-                          <Zap className="w-6 h-6" />
-                        </div>
-                        <h3 className="text-xl font-bold text-white mb-2">Desarrollo Web Ultra-Rápido</h3>
-                        <p className="text-slate-300 text-xs font-light leading-relaxed mb-4">
-                          Sitios web con calificaciones de 100/100 en Google PageSpeed, optimizados para conversión y SEO.
-                        </p>
-                        <button onClick={() => handleNavigate('services')} className="text-xs font-bold text-cyan-300 hover:text-cyan-200 inline-flex items-center gap-1 cursor-pointer">
-                          <span>Ver Servicios</span>
-                          <ArrowRight className="w-3.5 h-3.5" />
-                        </button>
-                      </div>
-
-                      <div className="p-6 rounded-3xl bg-slate-950/80 border border-cyan-500/20 backdrop-blur-xl shadow-xl hover:border-cyan-400/50 transition group">
-                        <div className="w-12 h-12 rounded-2xl bg-blue-500/20 border border-blue-400/40 flex items-center justify-center text-blue-300 mb-4 group-hover:scale-110 transition-transform">
-                          <Sparkles className="w-6 h-6" />
-                        </div>
-                        <h3 className="text-xl font-bold text-white mb-2">Agentes de Inteligencia Artificial</h3>
-                        <p className="text-slate-300 text-xs font-light leading-relaxed mb-4">
-                          Automatiza la atención al cliente 24/7 con bots RAG integrados directamente en tu negocio.
-                        </p>
-                        <button onClick={() => handleNavigate('services')} className="text-xs font-bold text-cyan-300 hover:text-cyan-200 inline-flex items-center gap-1 cursor-pointer">
-                          <span>Explorar IA</span>
-                          <ArrowRight className="w-3.5 h-3.5" />
-                        </button>
-                      </div>
-
-                      <div className="p-6 rounded-3xl bg-slate-950/80 border border-cyan-500/20 backdrop-blur-xl shadow-xl hover:border-cyan-400/50 transition group">
-                        <div className="w-12 h-12 rounded-2xl bg-indigo-500/20 border border-indigo-400/40 flex items-center justify-center text-indigo-300 mb-4 group-hover:scale-110 transition-transform">
-                          <ShieldCheck className="w-6 h-6" />
-                        </div>
-                        <h3 className="text-xl font-bold text-white mb-2">Garantía de Resultados</h3>
-                        <p className="text-slate-300 text-xs font-light leading-relaxed mb-4">
-                          Soporte técnico continuo, entrega puntual y estrategias comprobadas de aceleración digital.
-                        </p>
-                        <button onClick={() => handleNavigate('about')} className="text-xs font-bold text-cyan-300 hover:text-cyan-200 inline-flex items-center gap-1 cursor-pointer">
-                          <span>Conoce al Equipo</span>
-                          <ArrowRight className="w-3.5 h-3.5" />
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Interactive AI Agent Simulator */}
-                  <InViewDeferred minHeight="400px">
-                    <AiAgentSimulator
-                      onOpenQuote={() => {
-                        setSelectedQuoteService('Agentes de Inteligencia Artificial');
-                        setIsQuoteModalOpen(true);
-                      }}
-                    />
-                  </InViewDeferred>
-
-                  {/* Interactive ROI Calculator */}
-                  <InViewDeferred minHeight="350px">
-                    <RoiCalculator
-                      onOpenQuote={() => {
-                        setSelectedQuoteService('Desarrollo Web & Transformación Digital');
-                        setIsQuoteModalOpen(true);
-                      }}
-                    />
-                  </InViewDeferred>
-
-                  {/* Measurable Success Stories Section */}
-                  <InViewDeferred minHeight="450px">
-                    <SuccessStoriesSection
-                      onOpenQuote={(serviceName) => {
-                        setSelectedQuoteService(serviceName || 'Transformación Digital');
-                        setIsQuoteModalOpen(true);
-                      }}
-                    />
-                  </InViewDeferred>
-
                   {/* Testimonials Preview */}
-                  <InViewDeferred minHeight="300px">
+                  <InViewDeferred minHeight="300px" fallback={<TestimonialsSkeleton />}>
                     <TestimonialsSection
                       testimonials={INITIAL_TESTIMONIALS}
                       clientLogos={INITIAL_CLIENT_LOGOS}
                     />
                   </InViewDeferred>
-
-                  {/* Direct CTA Banner */}
-                  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="p-8 sm:p-12 rounded-3xl bg-gradient-to-r from-cyan-950/80 via-blue-950/80 to-slate-950 border border-cyan-500/40 backdrop-blur-2xl flex flex-col md:flex-row items-center justify-between gap-8 shadow-[0_0_50px_rgba(0,210,255,0.2)]">
-                      <div className="space-y-2 text-center md:text-left">
-                        <h3 className="text-2xl sm:text-3xl font-extrabold text-white">
-                          ¿Listo para impulsar tu presencia digital?
-                        </h3>
-                        <p className="text-slate-300 text-xs sm:text-sm font-light">
-                          Obtén una propuesta personalizada en menos de 24 horas.
-                        </p>
-                      </div>
-                      <button
-                        onClick={() => handleNavigate('contact')}
-                        className="px-8 py-4 rounded-2xl bg-gradient-to-r from-cyan-400 via-blue-600 to-indigo-600 text-white font-bold text-sm shadow-xl shadow-cyan-500/30 hover:scale-105 active:scale-95 transition flex items-center gap-2 shrink-0 cursor-pointer"
-                      >
-                        <Sparkles className="w-4 h-4" />
-                        <span>Ir a Contacto & Cotización</span>
-                      </button>
-                    </div>
-                  </div>
                 </div>
               )}
 
@@ -335,10 +218,12 @@ export default function App() {
               {activeSection === 'about' && (
                 <div className="space-y-12 pb-16">
                   <AboutSection />
-                  <TestimonialsSection
-                    testimonials={INITIAL_TESTIMONIALS}
-                    clientLogos={INITIAL_CLIENT_LOGOS}
-                  />
+                  <InViewDeferred minHeight="300px" fallback={<TestimonialsSkeleton />}>
+                    <TestimonialsSection
+                      testimonials={INITIAL_TESTIMONIALS}
+                      clientLogos={INITIAL_CLIENT_LOGOS}
+                    />
+                  </InViewDeferred>
                 </div>
               )}
 
@@ -349,19 +234,15 @@ export default function App() {
                     services={services}
                     onSelectServiceForQuote={handleOpenQuoteWithService}
                   />
-                  <ProcessSection />
+                  <InViewDeferred minHeight="300px">
+                    <ProcessSection />
+                  </InViewDeferred>
                 </div>
               )}
 
               {/* 4. PORTAFOLIO PAGE */}
               {activeSection === 'portfolio' && (
                 <div className="space-y-12 pb-16">
-                  <SuccessStoriesSection
-                    onOpenQuote={(serviceName) => {
-                      setSelectedQuoteService(serviceName || 'Transformación Digital');
-                      setIsQuoteModalOpen(true);
-                    }}
-                  />
                   <PortfolioSection
                     projects={portfolio}
                     onOpenQuote={() => setIsQuoteModalOpen(true)}
@@ -376,15 +257,21 @@ export default function App() {
                     plans={INITIAL_PRICING}
                     onSelectPlanForQuote={(planName) => handleOpenQuoteWithService(planName)}
                   />
-                  <ProcessSection />
-                  <FaqSection faqs={INITIAL_FAQS} />
+                  <InViewDeferred minHeight="300px">
+                    <ProcessSection />
+                  </InViewDeferred>
+                  <InViewDeferred minHeight="300px">
+                    <FaqSection faqs={INITIAL_FAQS} />
+                  </InViewDeferred>
                 </div>
               )}
 
               {/* 6. BLOG SEO PAGE */}
               {activeSection === 'blog' && (
                 <div className="pb-16">
-                  <BlogSection posts={blogPosts} />
+                  <InViewDeferred minHeight="500px" fallback={<BlogSkeleton />}>
+                    <BlogSection posts={blogPosts} />
+                  </InViewDeferred>
                 </div>
               )}
 
@@ -397,7 +284,9 @@ export default function App() {
                       console.log('Lead submitted:', lead);
                     }}
                   />
-                  <FaqSection faqs={INITIAL_FAQS} />
+                  <InViewDeferred minHeight="300px">
+                    <FaqSection faqs={INITIAL_FAQS} />
+                  </InViewDeferred>
                 </div>
               )}
             </motion.div>

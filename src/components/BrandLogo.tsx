@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import brandLogoImg from '../assets/images/jr_graphixglow_logo_1785360293197.jpg';
+import brandLogoImg from '../assets/images/regenerated_image_1785569587116.jpg';
+import { OptimizedImage } from './OptimizedImage';
 
 interface BrandLogoProps {
   size?: 'sm' | 'md' | 'lg';
@@ -51,11 +52,12 @@ export const BrandLogo: React.FC<BrandLogoProps> = React.memo(({ size = 'md', sh
   return (
     <div className={`flex items-center gap-2 select-none ${currentSize.container} group cursor-pointer`}>
       <div className="relative flex items-center justify-center rounded-xl overflow-hidden p-1 bg-black/95 border border-cyan-500/40 shadow-[0_0_25px_rgba(0,210,255,0.4)] group-hover:shadow-[0_0_35px_rgba(0,210,255,0.8)] group-hover:border-cyan-300 transition-all duration-300">
-        <img
+        <OptimizedImage
           src={brandLogoImg}
           alt="JR GraphixGlow - Logo Oficial"
-          referrerPolicy="no-referrer"
-          onError={() => setImgError(true)}
+          width={120}
+          height={48}
+          priority={true}
           className={`${currentSize.img} w-auto object-contain rounded-lg group-hover:scale-105 transition-transform duration-300 mix-blend-screen`}
         />
         <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/10 via-transparent to-blue-500/10 pointer-events-none" />

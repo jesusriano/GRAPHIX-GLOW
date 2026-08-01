@@ -7,6 +7,13 @@ import {
   PricingPlan, 
   FaqItem 
 } from '../types';
+import logoPhoto from '../assets/images/regenerated_image_1785569587116.jpg';
+import neurahealthLogo from '../assets/images/logos/neurahealth.svg';
+import nexusPayLogo from '../assets/images/logos/nexuspay.svg';
+import luxEstateLogo from '../assets/images/logos/luxestate.svg';
+import cyberAutoLogo from '../assets/images/logos/cyberauto.svg';
+import vortexQuantumLogo from '../assets/images/logos/vortexquantum.svg';
+import novaTechLogo from '../assets/images/logos/novatech.svg';
 
 export const INITIAL_SERVICES: ServiceItem[] = [
   {
@@ -122,6 +129,7 @@ export const INITIAL_PORTFOLIO: PortfolioProject[] = [
     id: 'neura-health',
     title: 'NeuraHealth AI - Plataforma Médica con IA Diagnóstica',
     client: 'NeuraHealth Medical Group',
+    logoUrl: neurahealthLogo,
     category: 'ia',
     summary: 'Plataforma web y sistema de triaje automatizado con inteligencia artificial para acelerar diagnósticos iniciales.',
     description: 'Diseñamos un ecosistema completo para clínicas especializadas. Los pacientes realizan su pre-consulta con un asistente de IA empático que compila antecedentes y genera sugerencias clínicas preliminares para los médicos.',
@@ -139,6 +147,7 @@ export const INITIAL_PORTFOLIO: PortfolioProject[] = [
     id: 'fintech-nexus',
     title: 'Nexus Pay - Core Banking & App Financiera Multi-Moneda',
     client: 'Nexus Group International',
+    logoUrl: nexusPayLogo,
     category: 'apps',
     summary: 'Aplicación móvil de pagos instantáneos en cripto y moneda local con biometría integrada.',
     description: 'Desarrollo integral de app móvil para iOS y Android con cifrado de grado militar, interfaz ultrasuave en dark mode y notificaciones push inmediatas para transferencias internacionales.',
@@ -156,6 +165,7 @@ export const INITIAL_PORTFOLIO: PortfolioProject[] = [
     id: 'lux-estate',
     title: 'LuxEstate Global - Portal Inmobiliario de Lujo con Tour 3D',
     client: 'LuxEstate Holdings',
+    logoUrl: luxEstateLogo,
     category: 'web',
     summary: 'Sitio web corporativo de bienes raíces premium con visualizador holográfico y cotizador interactivo.',
     description: 'Transformación digital para agencia inmobiliaria de propiedades exclusivas en Riviera Maya y Miami. Integración de mapa interactivo, filtros avanzados y captura inteligente de inversionistas.',
@@ -173,6 +183,7 @@ export const INITIAL_PORTFOLIO: PortfolioProject[] = [
     id: 'cyber-auto',
     title: 'CyberAuto ERP - Sistema de Automatización para Flotillas',
     client: 'CyberAuto Logistics',
+    logoUrl: cyberAutoLogo,
     category: 'automation',
     summary: 'Automatización completa de rutas, combustible y mantenimiento preventivo mediante sensores e IA.',
     description: 'Ecosistema web para el monitoreo en tiempo real de más de 500 camiones de carga, reduciendo costos operativos y generando alertas predictivas de averías.',
@@ -335,7 +346,7 @@ export const INITIAL_CLIENT_LOGOS: ClientLogo[] = [
   { 
     id: 'logo-1', 
     name: 'NeuraHealth Medical', 
-    logoUrl: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=150&q=80', 
+    logoUrl: neurahealthLogo, 
     industry: 'Salud & Biotecnología',
     badgeBg: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40',
     textColor: 'text-emerald-300',
@@ -347,7 +358,7 @@ export const INITIAL_CLIENT_LOGOS: ClientLogo[] = [
   { 
     id: 'logo-2', 
     name: 'Nexus Pay Banking', 
-    logoUrl: 'https://images.unsplash.com/photo-1559526324-4b87b5e36e44?auto=format&fit=crop&w=150&q=80', 
+    logoUrl: nexusPayLogo, 
     industry: 'Fintech & Finanzas',
     badgeBg: 'bg-amber-500/20 text-amber-300 border-amber-500/40',
     textColor: 'text-amber-300',
@@ -359,7 +370,7 @@ export const INITIAL_CLIENT_LOGOS: ClientLogo[] = [
   { 
     id: 'logo-3', 
     name: 'LuxEstate Global', 
-    logoUrl: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=150&q=80', 
+    logoUrl: luxEstateLogo, 
     industry: 'Bienes Raíces de Lujo',
     badgeBg: 'bg-fuchsia-500/20 text-fuchsia-300 border-fuchsia-500/40',
     textColor: 'text-fuchsia-300',
@@ -371,7 +382,7 @@ export const INITIAL_CLIENT_LOGOS: ClientLogo[] = [
   { 
     id: 'logo-4', 
     name: 'CyberAuto Fleet', 
-    logoUrl: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=150&q=80', 
+    logoUrl: cyberAutoLogo, 
     industry: 'Logística & Transporte',
     badgeBg: 'bg-cyan-500/20 text-cyan-300 border-cyan-500/40',
     textColor: 'text-cyan-300',
@@ -383,7 +394,7 @@ export const INITIAL_CLIENT_LOGOS: ClientLogo[] = [
   { 
     id: 'logo-5', 
     name: 'Vortex Quantum AI', 
-    logoUrl: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=150&q=80', 
+    logoUrl: vortexQuantumLogo, 
     industry: 'Computación Cuántica',
     badgeBg: 'bg-indigo-500/20 text-indigo-300 border-indigo-500/40',
     textColor: 'text-indigo-300',
@@ -395,7 +406,7 @@ export const INITIAL_CLIENT_LOGOS: ClientLogo[] = [
   { 
     id: 'logo-6', 
     name: 'Universidad NovaTech', 
-    logoUrl: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=150&q=80', 
+    logoUrl: novaTechLogo, 
     industry: 'Educación Superior',
     badgeBg: 'bg-blue-500/20 text-blue-300 border-blue-500/40',
     textColor: 'text-blue-300',
