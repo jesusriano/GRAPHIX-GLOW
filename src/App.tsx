@@ -1,10 +1,12 @@
-import React, { useState, lazy, Suspense } from 'react';
+import React, { useState, lazy, Suspense, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence, useScroll } from 'motion/react';
 import { BackgroundParticles } from './components/BackgroundParticles';
 import { CinematicIntro } from './components/CinematicIntro';
 import { Header } from './components/Header';
 import { Hero } from './components/Hero';
 import { Footer } from './components/Footer';
+import { AiAgentSimulator } from './components/AiAgentSimulator';
+import { RoiCalculator } from './components/RoiCalculator';
 import { Sparkles, ArrowRight, ShieldCheck, Zap } from 'lucide-react';
 
 import { 
@@ -33,19 +35,66 @@ const SeoToolsModal = lazy(() => import('./components/SeoToolsModal').then(m => 
 const QuoteModal = lazy(() => import('./components/QuoteModal').then(m => ({ default: m.QuoteModal })));
 
 const SectionSkeleton = () => (
-  <div className="w-full py-20 flex flex-col items-center justify-center space-y-4 min-h-[350px]">
-    <div className="relative flex items-center justify-center">
-      <div className="w-12 h-12 rounded-full border-2 border-cyan-500/20 border-t-cyan-400 animate-spin" />
-      <Sparkles className="w-5 h-5 text-cyan-400 absolute animate-pulse" />
+  <div className="w-full py-24 flex flex-col items-center justify-center space-y-6 min-h-[450px] max-w-7xl mx-auto px-4">
+    <div className="w-48 h-6 bg-cyan-500/10 rounded-full animate-pulse border border-cyan-500/20 mb-2" />
+    <div className="w-72 sm:w-[420px] h-10 bg-white/5 rounded-2xl animate-pulse mb-6" />
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full">
+      <div className="h-64 rounded-3xl bg-slate-900/60 border border-cyan-500/20 animate-pulse p-6 flex flex-col justify-between">
+        <div className="w-12 h-12 rounded-2xl bg-cyan-500/10 animate-pulse" />
+        <div className="space-y-3">
+          <div className="w-3/4 h-5 bg-white/10 rounded" />
+          <div className="w-full h-4 bg-white/5 rounded" />
+        </div>
+      </div>
+      <div className="h-64 rounded-3xl bg-slate-900/60 border border-cyan-500/20 animate-pulse p-6 flex flex-col justify-between">
+        <div className="w-12 h-12 rounded-2xl bg-blue-500/10 animate-pulse" />
+        <div className="space-y-3">
+          <div className="w-3/4 h-5 bg-white/10 rounded" />
+          <div className="w-full h-4 bg-white/5 rounded" />
+        </div>
+      </div>
+      <div className="h-64 rounded-3xl bg-slate-900/60 border border-cyan-500/20 animate-pulse p-6 flex flex-col justify-between">
+        <div className="w-12 h-12 rounded-2xl bg-indigo-500/10 animate-pulse" />
+        <div className="space-y-3">
+          <div className="w-3/4 h-5 bg-white/10 rounded" />
+          <div className="w-full h-4 bg-white/5 rounded" />
+        </div>
+      </div>
     </div>
-    <span className="text-xs font-mono text-cyan-400/80 tracking-widest uppercase animate-pulse">
-      Cargando experiencia...
-    </span>
   </div>
 );
 
 export default function App() {
   const { scrollYProgress } = useScroll();
+
+  // Fase 2.5: Intelligent prefetch and visible image preloading during idle time
+  React.useEffect(() => {
+    const prefetchKeySections = () => {
+      import('./components/ServicesSection');
+      import('./components/PortfolioSection');
+      import('./components/AboutSection');
+      import('./components/ContactSection');
+    };
+
+    const imagePreloads = [
+      '/jr_graphixglow_logo_1785360293197-CuFweDWG.jpg',
+      '/jesus_riano_founder_1785356395649-DmcyIIPs.jpg'
+    ];
+    imagePreloads.forEach((src) => {
+      const img = new Image();
+      img.src = src;
+    });
+
+    if (typeof window !== 'undefined') {
+      if ('requestIdleCallback' in window) {
+        requestIdleCallback(() => prefetchKeySections(), { timeout: 2500 });
+      } else {
+        const timer = setTimeout(prefetchKeySections, 1500);
+        return () => clearTimeout(timer);
+      }
+    }
+  }, []);
+
   const [showIntro, setShowIntro] = useState<boolean>(() => {
     if (typeof window !== 'undefined') {
       const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -56,12 +105,12 @@ export default function App() {
     return true;
   });
 
-  const handleIntroComplete = () => {
+  const handleIntroComplete = useCallback(() => {
     if (typeof window !== 'undefined') {
       sessionStorage.setItem('graphixglow_intro_seen', 'true');
     }
     setShowIntro(false);
-  };
+  }, []);
 
   // Active page view tab ('hero' | 'about' | 'services' | 'portfolio' | 'pricing' | 'blog' | 'contact')
   const [activeSection, setActiveSection] = useState<string>('hero');
@@ -78,15 +127,15 @@ export default function App() {
   const [portfolio, setPortfolio] = useState(INITIAL_PORTFOLIO);
   const [blogPosts, setBlogPosts] = useState(INITIAL_BLOG_POSTS);
 
-  const handleNavigate = (sectionId: string) => {
+  const handleNavigate = useCallback((sectionId: string) => {
     setActiveSection(sectionId);
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
+  }, []);
 
-  const handleOpenQuoteWithService = (serviceTitle: string) => {
+  const handleOpenQuoteWithService = useCallback((serviceTitle: string) => {
     setSelectedQuoteService(serviceTitle);
     setIsQuoteModalOpen(true);
-  };
+  }, []);
 
   return (
     <div className="bg-[#030712] text-slate-100 font-sans min-h-screen selection:bg-cyan-500 selection:text-slate-950 relative overflow-x-hidden flex flex-col justify-between">
@@ -210,6 +259,22 @@ export default function App() {
                       </div>
                     </div>
                   </div>
+
+                  {/* Interactive AI Agent Simulator */}
+                  <AiAgentSimulator
+                    onOpenQuote={() => {
+                      setSelectedQuoteService('Agentes de Inteligencia Artificial');
+                      setIsQuoteModalOpen(true);
+                    }}
+                  />
+
+                  {/* Interactive ROI Calculator */}
+                  <RoiCalculator
+                    onOpenQuote={() => {
+                      setSelectedQuoteService('Desarrollo Web & IA');
+                      setIsQuoteModalOpen(true);
+                    }}
+                  />
 
                   {/* Testimonials Preview */}
                   <TestimonialsSection

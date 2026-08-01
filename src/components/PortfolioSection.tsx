@@ -16,7 +16,7 @@ interface PortfolioSectionProps {
   onOpenQuote: () => void;
 }
 
-export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
+export const PortfolioSection: React.FC<PortfolioSectionProps> = React.memo(({
   projects,
   onOpenQuote
 }) => {
@@ -103,6 +103,10 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
                 <img
                   src={project.image}
                   alt={project.title}
+                  loading="lazy"
+                  decoding="async"
+                  width={800}
+                  height={600}
                   referrerPolicy="no-referrer"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-80 group-hover:opacity-100"
                 />
@@ -236,4 +240,4 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
       </AnimatePresence>
     </section>
   );
-};
+});

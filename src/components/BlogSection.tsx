@@ -21,7 +21,7 @@ interface BlogSectionProps {
   posts: BlogPost[];
 }
 
-export const BlogSection: React.FC<BlogSectionProps> = ({ posts }) => {
+export const BlogSection: React.FC<BlogSectionProps> = React.memo(({ posts }) => {
   const [selectedCategory, setSelectedCategory] = useState<string>('Todas');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [activePost, setActivePost] = useState<BlogPost | null>(null);
@@ -171,6 +171,10 @@ export const BlogSection: React.FC<BlogSectionProps> = ({ posts }) => {
                 <img
                   src={post.featuredImage}
                   alt={post.title}
+                  loading="lazy"
+                  decoding="async"
+                  width={800}
+                  height={450}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-80 group-hover:opacity-100"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#050B14] via-[#050B14]/30 to-transparent" />
@@ -204,6 +208,10 @@ export const BlogSection: React.FC<BlogSectionProps> = ({ posts }) => {
                     <img
                       src={post.author.avatar}
                       alt={post.author.name}
+                      loading="lazy"
+                      decoding="async"
+                      width={32}
+                      height={32}
                       className="w-8 h-8 rounded-full object-cover border border-cyan-400"
                     />
                     <div>
@@ -297,6 +305,10 @@ export const BlogSection: React.FC<BlogSectionProps> = ({ posts }) => {
                 <img
                   src={activePost.featuredImage}
                   alt={activePost.title}
+                  loading="lazy"
+                  decoding="async"
+                  width={800}
+                  height={450}
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -394,4 +406,4 @@ export const BlogSection: React.FC<BlogSectionProps> = ({ posts }) => {
       </AnimatePresence>
     </section>
   );
-};
+});

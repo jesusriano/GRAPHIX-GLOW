@@ -138,9 +138,15 @@ Responde de forma concisa (máximo 2-3 párrafos o puntos clave legibles), usa f
       return res.json({ reply: replyText });
     } catch (error: any) {
       console.error("Error en /api/chat:", error);
+      const errMessage = error?.message || "";
+      if (errMessage.includes("resource_exhausted") || errMessage.includes("quota") || errMessage.includes("429")) {
+        return res.json({
+          reply: "¡Hola! En este momento hemos alcanzado el límite temporal de consultas en nuestro modelo de IA por alta demanda. Sin embargo, en GraphixGlow seguimos listos para ayudarte con tu transformación digital integral (desarrollo web, apps, automatización y marketing). ¿Te gustaría agendar una asesoría directa o solicitar una cotización con nuestros arquitectos?"
+        });
+      }
       return res.status(500).json({
         error: "Error procesando el chat de IA",
-        details: error?.message || "Internal server error"
+        details: errMessage || "Internal server error"
       });
     }
   });

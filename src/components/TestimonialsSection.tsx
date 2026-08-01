@@ -21,7 +21,7 @@ interface TestimonialsSectionProps {
   clientLogos: ClientLogo[];
 }
 
-export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
+export const TestimonialsSection: React.FC<TestimonialsSectionProps> = React.memo(({
   testimonials,
   clientLogos
 }) => {
@@ -107,6 +107,10 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
                 <img
                   src={current.avatar}
                   alt={current.clientName}
+                  loading="lazy"
+                  decoding="async"
+                  width={56}
+                  height={56}
                   referrerPolicy="no-referrer"
                   className="w-14 h-14 rounded-full object-cover border-2 border-cyan-400 shadow-[0_0_15px_rgba(0,210,255,0.4)]"
                 />
@@ -182,4 +186,4 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
       </div>
     </section>
   );
-};
+});

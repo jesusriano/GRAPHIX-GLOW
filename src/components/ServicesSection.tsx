@@ -24,7 +24,7 @@ interface ServicesSectionProps {
   onSelectServiceForQuote: (serviceTitle: string) => void;
 }
 
-export const ServicesSection: React.FC<ServicesSectionProps> = ({
+export const ServicesSection: React.FC<ServicesSectionProps> = React.memo(({
   services,
   onSelectServiceForQuote
 }) => {
@@ -313,4 +313,4 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
       </AnimatePresence>
     </section>
   );
-};
+});
