@@ -19,7 +19,7 @@ interface HeroProps {
   onOpenAiChat: () => void;
 }
 
-export const Hero: React.FC<HeroProps> = ({
+export const Hero: React.FC<HeroProps> = React.memo(({
   onOpenQuote,
   onOpenPortfolio,
   onOpenAiChat
@@ -27,15 +27,21 @@ export const Hero: React.FC<HeroProps> = ({
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
-  const smoothX = useSpring(mouseX, { stiffness: 100, damping: 30 });
-  const smoothY = useSpring(mouseY, { stiffness: 100, damping: 30 });
+  const smoothX = useSpring(mouseX, { stiffness: 80, damping: 25 });
+  const smoothY = useSpring(mouseY, { stiffness: 80, damping: 25 });
 
-  const x1 = useTransform(smoothX, [-600, 600], [-15, 15]);
-  const y1 = useTransform(smoothY, [-600, 600], [-15, 15]);
-  const x2 = useTransform(smoothX, [-600, 600], [-25, 25]);
-  const y2 = useTransform(smoothY, [-600, 600], [-25, 25]);
+  const x1 = useTransform(smoothX, [-600, 600], [-10, 10]);
+  const y1 = useTransform(smoothY, [-600, 600], [-10, 10]);
+  const x2 = useTransform(smoothX, [-600, 600], [-18, 18]);
+  const y2 = useTransform(smoothY, [-600, 600], [-18, 18]);
+
+  const lastMoveRef = React.useRef(0);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
+    const now = Date.now();
+    if (now - lastMoveRef.current < 25) return; // Throttle to 40fps
+    lastMoveRef.current = now;
+
     const rect = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - rect.left - rect.width / 2;
     const y = e.clientY - rect.top - rect.height / 2;
@@ -50,29 +56,17 @@ export const Hero: React.FC<HeroProps> = ({
       className="relative min-h-screen mt-[-6vh] sm:mt-0 pt-20 sm:pt-32 pb-16 flex flex-col justify-center overflow-hidden"
     >
       {/* Background Animated Radial Glow Spheres */}
-      <motion.div
-        animate={{
-          opacity: [0.2, 0.4, 0.2],
-          scale: [1, 1.1, 1],
-        }}
-        transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
-        className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[550px] bg-gradient-to-tr from-cyan-500/25 via-blue-600/20 to-indigo-600/15 rounded-full blur-[130px] pointer-events-none"
+      <div
+        className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[550px] bg-gradient-to-tr from-cyan-500/25 via-blue-600/20 to-indigo-600/15 rounded-full blur-[130px] pointer-events-none animate-pulse"
       />
-      <motion.div
-        animate={{
-          opacity: [0.15, 0.35, 0.15],
-          scale: [1.1, 1, 1.1],
-        }}
-        transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
-        className="absolute bottom-1/4 right-10 w-[450px] h-[450px] bg-gradient-to-br from-indigo-500/20 via-purple-600/15 to-cyan-500/20 rounded-full blur-[120px] pointer-events-none"
+      <div
+        className="absolute bottom-1/4 right-10 w-[450px] h-[450px] bg-gradient-to-br from-indigo-500/20 via-purple-600/15 to-cyan-500/20 rounded-full blur-[120px] pointer-events-none animate-pulse"
       />
 
       {/* Subtle Animated Geometric SVG Background Pattern Layer */}
       <div className="absolute inset-0 opacity-[0.07] pointer-events-none overflow-hidden flex items-center justify-center">
-        <motion.div
-          animate={{ rotate: 360 }}
-          transition={{ duration: 120, repeat: Infinity, ease: 'linear' }}
-          className="w-[1200px] h-[1200px]"
+        <div
+          className="w-[1200px] h-[1200px] animate-[spin_120s_linear_infinite] will-change-transform"
         >
           <svg className="w-full h-full text-cyan-400" viewBox="0 0 100 100" fill="none">
             <defs>
@@ -85,7 +79,7 @@ export const Hero: React.FC<HeroProps> = ({
             <circle cx="50" cy="50" r="30" stroke="currentColor" strokeWidth="0.3" />
             <path d="M 50 0 L 50 100 M 0 50 L 100 50" stroke="currentColor" strokeWidth="0.3" strokeDasharray="1 3" />
           </svg>
-        </motion.div>
+        </div>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
@@ -243,5 +237,5 @@ export const Hero: React.FC<HeroProps> = ({
       </div>
     </section>
   );
-};
+});
 

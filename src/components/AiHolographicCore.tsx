@@ -42,7 +42,7 @@ export const AiHolographicCore: React.FC<AiHolographicCoreProps> = ({ onOpenAiCh
     }
 
     // 3D Particles Swarm
-    const particleCount = 70;
+    const particleCount = 35;
     const particles: Array<{
       x: number;
       y: number;
@@ -73,10 +73,23 @@ export const AiHolographicCore: React.FC<AiHolographicCoreProps> = ({ onOpenAiCh
       });
     }
 
-    let time = 0;
+    // Preallocated buffer for projected particle calculations to avoid GC thrashing
+    const projectedParticles: Array<{ x: number; y: number; radius: number; color: string }> = Array.from(
+      { length: particleCount },
+      () => ({ x: 0, y: 0, radius: 0, color: '' })
+    );
 
-    const render = () => {
-      time += 0.015;
+    let time = 0;
+    let lastRenderTime = 0;
+
+    const render = (timeMs: number) => {
+      animationFrameId = requestAnimationFrame(render);
+
+      // Frame rate throttle to ~30fps to keep main thread completely unblocked
+      if (timeMs - lastRenderTime < 30) return;
+      lastRenderTime = timeMs;
+
+      time += 0.025;
 
       // Smooth mouse damping
       mousePos.current.x += (mousePos.current.targetX - mousePos.current.x) * 0.05;
@@ -86,9 +99,9 @@ export const AiHolographicCore: React.FC<AiHolographicCoreProps> = ({ onOpenAiCh
 
       const centerX = width / 2 + mousePos.current.x * 30;
       const centerY = height / 2 + mousePos.current.y * 30;
-      const baseRadius = Math.min(width, height) * 0.17; // ~20% smaller as requested
+      const baseRadius = Math.min(width, height) * 0.17;
 
-      // 1. Draw Outer Glowing Atmosphere
+      // 1. Outer Atmosphere Glow
       const atmosphereGlow = ctx.createRadialGradient(
         centerX,
         centerY,
@@ -107,7 +120,7 @@ export const AiHolographicCore: React.FC<AiHolographicCoreProps> = ({ onOpenAiCh
       ctx.arc(centerX, centerY, baseRadius * 1.8, 0, Math.PI * 2);
       ctx.fill();
 
-      // 2. Draw 3D Rotating Holographic Rings
+      // 2. 3D Rotating Holographic Rings
       const ringConfigs = [
         { radius: baseRadius * 1.25, tiltX: 0.6 + mousePos.current.y * 0.3, tiltY: time * 0.8 + mousePos.current.x * 0.3, color: 'rgba(6, 182, 212, 0.6)', dash: [15, 25] },
         { radius: baseRadius * 1.45, tiltX: -0.4 - mousePos.current.y * 0.2, tiltY: -time * 0.5, color: 'rgba(59, 130, 246, 0.5)', dash: [8, 12] },
@@ -115,7 +128,8 @@ export const AiHolographicCore: React.FC<AiHolographicCoreProps> = ({ onOpenAiCh
         { radius: baseRadius * 1.05, tiltX: -0.8, tiltY: time * 1.2, color: 'rgba(56, 189, 248, 0.7)', dash: [6, 6] },
       ];
 
-      ringConfigs.forEach((ring) => {
+      for (let r = 0; r < ringConfigs.length; r++) {
+        const ring = ringConfigs[r];
         ctx.save();
         ctx.translate(centerX, centerY);
         ctx.rotate(ring.tiltY);
@@ -130,9 +144,9 @@ export const AiHolographicCore: React.FC<AiHolographicCoreProps> = ({ onOpenAiCh
         ctx.stroke();
 
         ctx.restore();
-      });
+      }
 
-      // 3. Central AI Sphere Nucleus with pulsing light
+      // 3. Central AI Sphere Nucleus
       const pulseFactor = 1 + Math.sin(time * 3) * 0.08;
       const coreRadius = baseRadius * 0.55 * pulseFactor;
 
@@ -149,22 +163,18 @@ export const AiHolographicCore: React.FC<AiHolographicCoreProps> = ({ onOpenAiCh
       coreGlow.addColorStop(0.65, '#2563eb');
       coreGlow.addColorStop(1, 'rgba(15, 23, 42, 0.9)');
 
-      ctx.save();
       ctx.beginPath();
       ctx.arc(centerX, centerY, coreRadius, 0, Math.PI * 2);
       ctx.fillStyle = coreGlow;
       ctx.fill();
 
-      // Energy Pulsing Outline
       ctx.strokeStyle = 'rgba(6, 182, 212, 0.9)';
       ctx.lineWidth = 2;
       ctx.stroke();
-      ctx.restore();
 
-      // 4. Draw Orbiting Neural Network Particles and Connections
-      const projectedParticles: Array<{ x: number; y: number; radius: number; color: string }> = [];
-
-      particles.forEach((p) => {
+      // 4. Orbiting Neural Network Particles
+      for (let i = 0; i < particles.length; i++) {
+        const p = particles[i];
         p.baseAngle += 0.012;
         const angle = p.baseAngle;
         const x3d = Math.cos(angle) * p.orbitDistance;
@@ -176,28 +186,30 @@ export const AiHolographicCore: React.FC<AiHolographicCoreProps> = ({ onOpenAiCh
         const projY = centerY + y3d * scale;
         const projRadius = Math.max(0.6, p.radius * scale * (1 + Math.sin(time * 4 + p.baseAngle) * 0.2));
 
-        projectedParticles.push({ x: projX, y: projY, radius: projRadius, color: p.color });
+        const proj = projectedParticles[i];
+        proj.x = projX;
+        proj.y = projY;
+        proj.radius = projRadius;
+        proj.color = p.color;
 
-        ctx.save();
         ctx.fillStyle = p.color;
         ctx.globalAlpha = Math.min(1, Math.max(0.3, scale - 0.1));
         ctx.beginPath();
         ctx.arc(projX, projY, projRadius, 0, Math.PI * 2);
         ctx.fill();
-        ctx.restore();
-      });
+      }
 
-      // Draw Neural Connection Lines and Energy Sparks travelling along links
-      ctx.save();
-      for (let i = 0; i < projectedParticles.length; i++) {
-        for (let j = i + 1; j < projectedParticles.length; j++) {
-          const p1 = projectedParticles[i];
+      // Fast Neural Connection Lines
+      for (let i = 0; i < particleCount; i++) {
+        const p1 = projectedParticles[i];
+        for (let j = i + 1; j < particleCount; j++) {
           const p2 = projectedParticles[j];
           const dx = p1.x - p2.x;
           const dy = p1.y - p2.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
+          const distSq = dx * dx + dy * dy;
 
-          if (dist < 60) {
+          if (distSq < 3600) { // 60px squared
+            const dist = Math.sqrt(distSq);
             const alpha = (1 - dist / 60) * 0.4;
             ctx.strokeStyle = `rgba(6, 182, 212, ${alpha})`;
             ctx.lineWidth = 0.8;
@@ -206,12 +218,12 @@ export const AiHolographicCore: React.FC<AiHolographicCoreProps> = ({ onOpenAiCh
             ctx.lineTo(p2.x, p2.y);
             ctx.stroke();
 
-            // Energy spark traveling along the link
-            if ((i + j) % 5 === 0) {
+            if ((i + j) % 6 === 0) {
               const sparkProgress = (time * 1.5 + i * 0.3) % 1;
               const sparkX = p1.x + (p2.x - p1.x) * sparkProgress;
               const sparkY = p1.y + (p2.y - p1.y) * sparkProgress;
               ctx.fillStyle = '#ffffff';
+              ctx.globalAlpha = 1;
               ctx.beginPath();
               ctx.arc(sparkX, sparkY, 1.5, 0, Math.PI * 2);
               ctx.fill();
@@ -219,10 +231,10 @@ export const AiHolographicCore: React.FC<AiHolographicCoreProps> = ({ onOpenAiCh
           }
         }
       }
-      ctx.restore();
 
-      // 5. Draw Digital Data Streams radiating outward
-      const streamCount = 6;
+      // 5. Digital Data Streams
+      const streamCount = 5;
+      ctx.fillStyle = '#38bdf8';
       for (let s = 0; s < streamCount; s++) {
         const streamAngle = (s * Math.PI * 2) / streamCount + time * 0.4;
         const startDist = coreRadius;
@@ -232,19 +244,15 @@ export const AiHolographicCore: React.FC<AiHolographicCoreProps> = ({ onOpenAiCh
         const sx = centerX + Math.cos(streamAngle) * currentDist;
         const sy = centerY + Math.sin(streamAngle) * currentDist;
 
-        ctx.save();
-        ctx.fillStyle = '#38bdf8';
         ctx.globalAlpha = 1 - (currentDist - startDist) / (endDist - startDist);
         ctx.beginPath();
         ctx.arc(sx, sy, 2.5, 0, Math.PI * 2);
         ctx.fill();
-        ctx.restore();
       }
-
-      animationFrameId = requestAnimationFrame(render);
+      ctx.globalAlpha = 1;
     };
 
-    render();
+    animationFrameId = requestAnimationFrame(render);
 
     return () => {
       cancelAnimationFrame(animationFrameId);

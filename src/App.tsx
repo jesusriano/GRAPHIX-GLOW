@@ -1,12 +1,9 @@
 import React, { useState, lazy, Suspense, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence, useScroll } from 'motion/react';
-import { BackgroundParticles } from './components/BackgroundParticles';
 import { CinematicIntro } from './components/CinematicIntro';
 import { Header } from './components/Header';
 import { Hero } from './components/Hero';
 import { Footer } from './components/Footer';
-import { AiAgentSimulator } from './components/AiAgentSimulator';
-import { RoiCalculator } from './components/RoiCalculator';
 import { Sparkles, ArrowRight, ShieldCheck, Zap } from 'lucide-react';
 
 import founderPhoto from './assets/images/jesus_riano_founder_1785356395649.jpg';
@@ -22,7 +19,10 @@ import {
   INITIAL_FAQS 
 } from './data/initialData';
 
-// Lazy loaded major page sections and modals for bundle optimization
+// Lazy loaded components & major page sections for bundle optimization
+const BackgroundParticles = lazy(() => import('./components/BackgroundParticles').then(m => ({ default: m.BackgroundParticles })));
+const AiAgentSimulator = lazy(() => import('./components/AiAgentSimulator').then(m => ({ default: m.AiAgentSimulator })));
+const RoiCalculator = lazy(() => import('./components/RoiCalculator').then(m => ({ default: m.RoiCalculator })));
 const AboutSection = lazy(() => import('./components/AboutSection').then(m => ({ default: m.AboutSection })));
 const ServicesSection = lazy(() => import('./components/ServicesSection').then(m => ({ default: m.ServicesSection })));
 const PortfolioSection = lazy(() => import('./components/PortfolioSection').then(m => ({ default: m.PortfolioSection })));
@@ -37,6 +37,16 @@ const AiChatWidget = lazy(() => import('./components/AiChatWidget').then(m => ({
 const AdminDashboard = lazy(() => import('./components/AdminDashboard').then(m => ({ default: m.AdminDashboard })));
 const SeoToolsModal = lazy(() => import('./components/SeoToolsModal').then(m => ({ default: m.SeoToolsModal })));
 const QuoteModal = lazy(() => import('./components/QuoteModal').then(m => ({ default: m.QuoteModal })));
+
+const ScrollProgressBar = React.memo(() => {
+  const { scrollYProgress } = useScroll();
+  return (
+    <motion.div
+      style={{ scaleX: scrollYProgress }}
+      className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-500 z-50 origin-left shadow-[0_0_15px_rgba(0,210,255,0.8)] pointer-events-none"
+    />
+  );
+});
 
 const SectionSkeleton = () => (
   <div className="w-full py-24 flex flex-col items-center justify-center space-y-6 min-h-[450px] max-w-7xl mx-auto px-4">
@@ -69,31 +79,30 @@ const SectionSkeleton = () => (
 );
 
 export default function App() {
-  const { scrollYProgress } = useScroll();
-
-  // Fase 2.5: Intelligent prefetch and visible image preloading during idle time
+  // Idle prefetching after initial interactive load
   React.useEffect(() => {
-    const prefetchKeySections = () => {
-      import('./components/ServicesSection');
-      import('./components/PortfolioSection');
-      import('./components/AboutSection');
-      import('./components/ContactSection');
-    };
+    const timer = setTimeout(() => {
+      const prefetchKeySections = () => {
+        import('./components/ServicesSection');
+        import('./components/PortfolioSection');
+        import('./components/AboutSection');
+        import('./components/ContactSection');
+      };
 
-    const imagePreloads = [logoPhoto, founderPhoto];
-    imagePreloads.forEach((src) => {
-      const img = new Image();
-      img.src = src;
-    });
+      const imagePreloads = [logoPhoto, founderPhoto];
+      imagePreloads.forEach((src) => {
+        const img = new Image();
+        img.src = src;
+      });
 
-    if (typeof window !== 'undefined') {
       if ('requestIdleCallback' in window) {
-        requestIdleCallback(() => prefetchKeySections(), { timeout: 2500 });
+        requestIdleCallback(() => prefetchKeySections(), { timeout: 3000 });
       } else {
-        const timer = setTimeout(prefetchKeySections, 1500);
-        return () => clearTimeout(timer);
+        prefetchKeySections();
       }
-    }
+    }, 3000);
+
+    return () => clearTimeout(timer);
   }, []);
 
   const [showIntro, setShowIntro] = useState<boolean>(() => {
@@ -141,13 +150,12 @@ export default function App() {
   return (
     <div className="bg-[#030712] text-slate-100 font-sans min-h-screen selection:bg-cyan-500 selection:text-slate-950 relative overflow-x-hidden flex flex-col justify-between">
       {/* Real-time Scroll Progress Bar */}
-      <motion.div
-        style={{ scaleX: scrollYProgress }}
-        className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-500 z-50 origin-left shadow-[0_0_15px_rgba(0,210,255,0.8)]"
-      />
+      <ScrollProgressBar />
 
       {/* Background Interactive Canvas Particles */}
-      <BackgroundParticles />
+      <Suspense fallback={null}>
+        <BackgroundParticles />
+      </Suspense>
 
       {/* Cinematic Intro Overlay */}
       {showIntro && (

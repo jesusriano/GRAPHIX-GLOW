@@ -18,7 +18,7 @@ interface HeaderProps {
   onNavigate: (sectionId: string) => void;
 }
 
-export const Header: React.FC<HeaderProps> = ({
+export const Header: React.FC<HeaderProps> = React.memo(({
   onOpenQuote,
   onReplayIntro,
   onOpenAiChat,
@@ -30,9 +30,10 @@ export const Header: React.FC<HeaderProps> = ({
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
+      const isScrolled = window.scrollY > 20;
+      setScrolled(prev => (prev !== isScrolled ? isScrolled : prev));
     };
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -166,5 +167,5 @@ export const Header: React.FC<HeaderProps> = ({
       )}
     </header>
   );
-};
+});
 

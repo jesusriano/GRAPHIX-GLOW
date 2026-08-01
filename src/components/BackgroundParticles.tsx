@@ -45,7 +45,7 @@ export const BackgroundParticles: React.FC = () => {
 
     // Initial tech energy rain phase: first 2.5 seconds descending particles
     const startTime = Date.now();
-    const particleCount = Math.min(Math.floor(width / 18), 70);
+    const particleCount = Math.min(Math.floor(width / 35), 32);
 
     interface Particle {
       x: number;
@@ -77,105 +77,111 @@ export const BackgroundParticles: React.FC = () => {
       });
     }
 
-    const render = () => {
-      if (isVisible) {
-        ctx.clearRect(0, 0, width, height);
+    let lastTime = 0;
 
-        const elapsed = (Date.now() - startTime) / 1000;
-        const settlingFactor = Math.max(0, 1 - elapsed / 3.0);
+    const render = (time: number) => {
+      animationFrameId = requestAnimationFrame(render);
 
-        // Tech Grid Background
-        ctx.strokeStyle = 'rgba(0, 210, 255, 0.03)';
-        ctx.lineWidth = 1;
-        const gridSize = 65;
+      if (!isVisible) return;
 
-        for (let x = 0; x < width; x += gridSize) {
-          ctx.beginPath();
-          ctx.moveTo(x, 0);
-          ctx.lineTo(x, height);
-          ctx.stroke();
+      // Throttle canvas rendering to ~30fps to free up main thread
+      if (time - lastTime < 30) return;
+      lastTime = time;
+
+      ctx.clearRect(0, 0, width, height);
+
+      const elapsed = (Date.now() - startTime) / 1000;
+      const settlingFactor = Math.max(0, 1 - elapsed / 3.0);
+
+      // Single-path Tech Grid Background
+      ctx.strokeStyle = 'rgba(0, 210, 255, 0.03)';
+      ctx.lineWidth = 1;
+      const gridSize = 80;
+
+      ctx.beginPath();
+      for (let x = 0; x < width; x += gridSize) {
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, height);
+      }
+      for (let y = 0; y < height; y += gridSize) {
+        ctx.moveTo(0, y);
+        ctx.lineTo(width, y);
+      }
+      ctx.stroke();
+
+      // Update and draw particles
+      const nowMs = Date.now();
+      for (let i = 0; i < particles.length; i++) {
+        const p = particles[i];
+        const currentVy = (p.initialVy * settlingFactor) + ((Math.random() - 0.5) * 0.3 * (1 - settlingFactor));
+        p.y += currentVy;
+        p.x += p.vx;
+
+        p.alpha += Math.sin(nowMs * p.pulseSpeed) * 0.01;
+        p.alpha = Math.max(0.15, Math.min(0.85, p.alpha));
+
+        if (p.x < 0) p.x = width;
+        if (p.x > width) p.x = 0;
+        if (p.y > height) {
+          p.y = -20;
+          p.x = Math.random() * width;
         }
 
-        for (let y = 0; y < height; y += gridSize) {
-          ctx.beginPath();
-          ctx.moveTo(0, y);
-          ctx.lineTo(width, y);
-          ctx.stroke();
+        const dx = mouseX - p.x;
+        const dy = mouseY - p.y;
+        const distSq = dx * dx + dy * dy;
+        let renderRadius = p.radius;
+        let renderAlpha = p.alpha;
+
+        if (distSq < 22500) { // 150px
+          const dist = Math.sqrt(distSq);
+          const factor = 1 - dist / 150;
+          renderRadius += factor * 2;
+          renderAlpha = Math.min(1, renderAlpha + factor * 0.4);
         }
 
-        // Update and draw particles
-        particles.forEach((p) => {
-          const currentVy = (p.initialVy * settlingFactor) + ((Math.random() - 0.5) * 0.3 * (1 - settlingFactor));
-          p.y += currentVy;
-          p.x += p.vx;
+        ctx.globalAlpha = renderAlpha;
+        ctx.fillStyle = p.color;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, renderRadius, 0, Math.PI * 2);
+        ctx.fill();
 
-          p.alpha += Math.sin(Date.now() * p.pulseSpeed) * 0.01;
-          p.alpha = Math.max(0.15, Math.min(0.85, p.alpha));
-
-          if (p.x < 0) p.x = width;
-          if (p.x > width) p.x = 0;
-          if (p.y > height) {
-            p.y = -20;
-            p.x = Math.random() * width;
-          }
-
-          const dx = mouseX - p.x;
-          const dy = mouseY - p.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          let renderRadius = p.radius;
-          let renderAlpha = p.alpha;
-
-          if (dist < 150) {
-            const factor = 1 - dist / 150;
-            renderRadius += factor * 2;
-            renderAlpha = Math.min(1, renderAlpha + factor * 0.4);
-          }
-
-          ctx.save();
-          ctx.globalAlpha = renderAlpha;
-          ctx.fillStyle = p.color;
+        if (settlingFactor > 0.1) {
+          ctx.strokeStyle = p.color;
+          ctx.lineWidth = renderRadius * 0.8;
           ctx.beginPath();
-          ctx.arc(p.x, p.y, renderRadius, 0, Math.PI * 2);
-          ctx.fill();
-
-          if (settlingFactor > 0.1) {
-            ctx.strokeStyle = p.color;
-            ctx.lineWidth = renderRadius * 0.8;
-            ctx.beginPath();
-            ctx.moveTo(p.x, p.y);
-            ctx.lineTo(p.x - p.vx * 3, p.y - currentVy * 4);
-            ctx.stroke();
-          }
-
-          ctx.restore();
-        });
-
-        // Connecting lines between close nodes
-        for (let i = 0; i < particles.length; i++) {
-          for (let j = i + 1; j < particles.length; j++) {
-            const dx = particles[i].x - particles[j].x;
-            const dy = particles[i].y - particles[j].y;
-            const dist = Math.sqrt(dx * dx + dy * dy);
-
-            if (dist < 110) {
-              ctx.save();
-              ctx.globalAlpha = (1 - dist / 110) * 0.18;
-              ctx.strokeStyle = '#00D2FF';
-              ctx.lineWidth = 0.6;
-              ctx.beginPath();
-              ctx.moveTo(particles[i].x, particles[i].y);
-              ctx.lineTo(particles[j].x, particles[j].y);
-              ctx.stroke();
-              ctx.restore();
-            }
-          }
+          ctx.moveTo(p.x, p.y);
+          ctx.lineTo(p.x - p.vx * 3, p.y - currentVy * 4);
+          ctx.stroke();
         }
       }
 
-      animationFrameId = requestAnimationFrame(render);
+      // Fast squared-distance check for node connecting lines
+      ctx.strokeStyle = '#00D2FF';
+      ctx.lineWidth = 0.6;
+
+      for (let i = 0; i < particles.length; i++) {
+        const p1 = particles[i];
+        for (let j = i + 1; j < particles.length; j++) {
+          const p2 = particles[j];
+          const dx = p1.x - p2.x;
+          const dy = p1.y - p2.y;
+          const distSq = dx * dx + dy * dy;
+
+          if (distSq < 12100) { // 110px
+            const dist = Math.sqrt(distSq);
+            ctx.globalAlpha = (1 - dist / 110) * 0.18;
+            ctx.beginPath();
+            ctx.moveTo(p1.x, p1.y);
+            ctx.lineTo(p2.x, p2.y);
+            ctx.stroke();
+          }
+        }
+      }
+      ctx.globalAlpha = 1;
     };
 
-    render();
+    animationFrameId = requestAnimationFrame(render);
 
     return () => {
       window.removeEventListener('resize', handleResize);

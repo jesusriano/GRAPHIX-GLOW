@@ -31,7 +31,7 @@ const WhatsappIcon = ({ className = "w-6 h-6" }: { className?: string }) => (
   </svg>
 );
 
-export const Footer: React.FC<FooterProps> = ({ onOpenQuote, onNavigate }) => {
+export const Footer: React.FC<FooterProps> = React.memo(({ onOpenQuote, onNavigate }) => {
   const [imgError, setImgError] = React.useState(false);
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -194,5 +194,5 @@ export const Footer: React.FC<FooterProps> = ({ onOpenQuote, onNavigate }) => {
       </motion.button>
     </footer>
   );
-};
+});
 

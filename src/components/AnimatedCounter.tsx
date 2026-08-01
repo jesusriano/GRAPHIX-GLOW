@@ -8,7 +8,7 @@ interface AnimatedCounterProps {
   className?: string;
 }
 
-export const AnimatedCounter: React.FC<AnimatedCounterProps> = ({
+export const AnimatedCounter: React.FC<AnimatedCounterProps> = React.memo(({
   value,
   prefix = '',
   suffix = '',
@@ -27,7 +27,7 @@ export const AnimatedCounter: React.FC<AnimatedCounterProps> = ({
           setHasAnimated(true);
         }
       },
-      { threshold: 0.2 }
+      { threshold: 0.1 }
     );
 
     if (elementRef.current) {
@@ -41,23 +41,26 @@ export const AnimatedCounter: React.FC<AnimatedCounterProps> = ({
     if (!hasAnimated) return;
 
     let startTimestamp: number | null = null;
+    let frameId: number;
+
     const step = (timestamp: number) => {
       if (!startTimestamp) startTimestamp = timestamp;
       const progress = Math.min((timestamp - startTimestamp) / duration, 1);
       
-      // Easing function: easeOutExpo for ultra smooth acceleration into target
       const easeProgress = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
-      
-      setCount(Math.floor(easeProgress * value));
+      const nextCount = Math.floor(easeProgress * value);
+
+      setCount(prev => (prev !== nextCount ? nextCount : prev));
 
       if (progress < 1) {
-        window.requestAnimationFrame(step);
+        frameId = window.requestAnimationFrame(step);
       } else {
         setCount(value);
       }
     };
 
-    window.requestAnimationFrame(step);
+    frameId = window.requestAnimationFrame(step);
+    return () => window.cancelAnimationFrame(frameId);
   }, [hasAnimated, value, duration]);
 
   return (
@@ -65,4 +68,4 @@ export const AnimatedCounter: React.FC<AnimatedCounterProps> = ({
       {prefix}{count}{suffix}
     </span>
   );
-};
+});
