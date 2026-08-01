@@ -1,6 +1,5 @@
 import React, { useState, lazy, Suspense, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence, useScroll } from 'motion/react';
-import { CinematicIntro } from './components/CinematicIntro';
 import { Header } from './components/Header';
 import { Hero } from './components/Hero';
 import { Footer } from './components/Footer';
@@ -106,23 +105,6 @@ export default function App() {
     return () => clearTimeout(timer);
   }, []);
 
-  const [showIntro, setShowIntro] = useState<boolean>(() => {
-    if (typeof window !== 'undefined') {
-      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if (prefersReducedMotion) return false;
-      const hasVisited = sessionStorage.getItem('graphixglow_intro_seen');
-      if (hasVisited === 'true') return false;
-    }
-    return true;
-  });
-
-  const handleIntroComplete = useCallback(() => {
-    if (typeof window !== 'undefined') {
-      sessionStorage.setItem('graphixglow_intro_seen', 'true');
-    }
-    setShowIntro(false);
-  }, []);
-
   // Active page view tab ('hero' | 'about' | 'services' | 'portfolio' | 'pricing' | 'blog' | 'contact')
   const [activeSection, setActiveSection] = useState<string>('hero');
 
@@ -158,11 +140,6 @@ export default function App() {
         <BackgroundParticles />
       </Suspense>
 
-      {/* Cinematic Intro Overlay */}
-      {showIntro && (
-        <CinematicIntro onComplete={handleIntroComplete} />
-      )}
-
       {/* Header Navigation */}
       <Header
         onOpenQuote={() => {
@@ -171,8 +148,6 @@ export default function App() {
         }}
         onOpenAdmin={() => setIsAdminDashboardOpen(true)}
         onOpenSeo={() => setIsSeoModalOpen(true)}
-        onReplayIntro={() => setShowIntro(true)}
-        onOpenAiChat={() => setIsAiChatOpen(true)}
         activeSection={activeSection}
         onNavigate={handleNavigate}
       />

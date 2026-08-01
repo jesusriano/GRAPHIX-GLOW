@@ -2,9 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { 
   Menu, 
   X, 
-  Sparkles, 
-  Bot, 
-  RotateCcw
+  Sparkles
 } from 'lucide-react';
 import { BrandLogo } from './BrandLogo';
 
@@ -12,16 +10,12 @@ interface HeaderProps {
   onOpenQuote: () => void;
   onOpenAdmin?: () => void;
   onOpenSeo?: () => void;
-  onReplayIntro: () => void;
-  onOpenAiChat: () => void;
   activeSection: string;
   onNavigate: (sectionId: string) => void;
 }
 
 export const Header: React.FC<HeaderProps> = React.memo(({
   onOpenQuote,
-  onReplayIntro,
-  onOpenAiChat,
   activeSection,
   onNavigate
 }) => {
@@ -98,28 +92,6 @@ export const Header: React.FC<HeaderProps> = React.memo(({
 
         {/* Action Controls */}
         <div className="hidden sm:flex items-center gap-3">
-          {/* AI Assistant Chat Trigger */}
-          <button
-            onClick={onOpenAiChat}
-            title="Asistente de Inteligencia Artificial"
-            aria-label="Abrir asistente de Inteligencia Artificial"
-            className="p-2.5 rounded-xl bg-cyan-950/40 hover:bg-cyan-900/60 border border-cyan-500/30 text-cyan-300 hover:text-white transition cursor-pointer relative shadow-[0_0_15px_rgba(0,210,255,0.15)] flex items-center gap-2 group"
-          >
-            <Bot className="w-4 h-4 text-cyan-400 group-hover:scale-110 transition-transform" />
-            <span className="text-xs font-medium text-cyan-200 hidden md:inline">Asistente IA</span>
-            <span className="w-2 h-2 bg-cyan-400 rounded-full animate-ping" />
-          </button>
-
-          {/* Replay Intro */}
-          <button
-            onClick={onReplayIntro}
-            title="Reproducir Intro Cinemática"
-            aria-label="Reproducir intro cinemática"
-            className="p-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300 hover:text-white transition cursor-pointer"
-          >
-            <RotateCcw className="w-4 h-4" />
-          </button>
-
           {/* Primary CTA */}
           <button
             onClick={onOpenQuote}

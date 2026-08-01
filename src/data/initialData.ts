@@ -126,75 +126,145 @@ export const INITIAL_SERVICES: ServiceItem[] = [
 
 export const INITIAL_PORTFOLIO: PortfolioProject[] = [
   {
-    id: 'neura-health',
-    title: 'NeuraHealth AI - Plataforma Médica con IA Diagnóstica',
-    client: 'NeuraHealth Medical Group',
-    logoUrl: neurahealthLogo,
-    category: 'ia',
-    summary: 'Plataforma web y sistema de triaje automatizado con inteligencia artificial para acelerar diagnósticos iniciales.',
-    description: 'Diseñamos un ecosistema completo para clínicas especializadas. Los pacientes realizan su pre-consulta con un asistente de IA empático que compila antecedentes y genera sugerencias clínicas preliminares para los médicos.',
-    image: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=800&q=80',
-    technologies: ['React 19', 'Next.js', 'Gemini API', 'Tailwind CSS', 'Express', 'Python AI'],
-    metrics: [
-      { label: 'Tiempo de triaje', value: '-65%' },
-      { label: 'Satisfacción paciente', value: '98.4%' },
-      { label: 'Procesamiento mensual', value: '+12,000' }
-    ],
-    year: '2025',
-    featured: true
-  },
-  {
-    id: 'fintech-nexus',
-    title: 'Nexus Pay - Core Banking & App Financiera Multi-Moneda',
-    client: 'Nexus Group International',
-    logoUrl: nexusPayLogo,
-    category: 'apps',
-    summary: 'Aplicación móvil de pagos instantáneos en cripto y moneda local con biometría integrada.',
-    description: 'Desarrollo integral de app móvil para iOS y Android con cifrado de grado militar, interfaz ultrasuave en dark mode y notificaciones push inmediatas para transferencias internacionales.',
-    image: 'https://images.unsplash.com/photo-1559526324-4b87b5e36e44?auto=format&fit=crop&w=800&q=80',
-    technologies: ['React Native', 'TypeScript', 'Node.js', 'PostgreSQL', 'WebSockets'],
-    metrics: [
-      { label: 'Descargas activas', value: '+250,000' },
-      { label: 'Tasa de conversión', value: '8.4%' },
-      { label: 'Rating Stores', value: '4.9 ★' }
-    ],
-    year: '2025',
-    featured: true
-  },
-  {
-    id: 'lux-estate',
-    title: 'LuxEstate Global - Portal Inmobiliario de Lujo con Tour 3D',
-    client: 'LuxEstate Holdings',
-    logoUrl: luxEstateLogo,
+    id: 'riaseal-asociados',
+    title: 'RIASEAL Asociados - Sitio Web Corporativo & Identidad Digital',
+    client: 'RIASEAL Asociados',
     category: 'web',
-    summary: 'Sitio web corporativo de bienes raíces premium con visualizador holográfico y cotizador interactivo.',
-    description: 'Transformación digital para agencia inmobiliaria de propiedades exclusivas en Riviera Maya y Miami. Integración de mapa interactivo, filtros avanzados y captura inteligente de inversionistas.',
-    image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80',
-    technologies: ['React', 'Three.js', 'Tailwind CSS', 'Framer Motion', 'Mapbox API'],
+    summary: 'Sitio web corporativo de alta gama, soluciones empresariales y gestión de identidad digital.',
+    description: 'Desarrollo integral de portal corporativo con arquitectura de alto rendimiento, optimizado para posicionamiento en motores de búsqueda y transmisión de máxima autoridad empresarial.',
+    image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800&q=80',
+    technologies: ['React 19', 'Tailwind CSS', 'TypeScript', 'SEO Técnico'],
     metrics: [
-      { label: 'Leads cualificados', value: '+320%' },
-      { label: 'Tiempo en sitio', value: '4m 12s' },
-      { label: 'Propiedades vendidas', value: '$45M USD' }
+      { label: 'Velocidad de carga', value: '0.4s' },
+      { label: 'Core Web Vitals', value: '100/100' },
+      { label: 'Autoridad de Marca', value: '+180%' }
     ],
-    year: '2024',
-    featured: true
+    year: '2026',
+    featured: true,
+    country: '🇲🇽 México'
   },
   {
-    id: 'cyber-auto',
-    title: 'CyberAuto ERP - Sistema de Automatización para Flotillas',
-    client: 'CyberAuto Logistics',
-    logoUrl: cyberAutoLogo,
-    category: 'automation',
-    summary: 'Automatización completa de rutas, combustible y mantenimiento preventivo mediante sensores e IA.',
-    description: 'Ecosistema web para el monitoreo en tiempo real de más de 500 camiones de carga, reduciendo costos operativos y generando alertas predictivas de averías.',
-    image: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=800&q=80',
-    technologies: ['TypeScript', 'Express', 'Make/n8n', 'Tailwind CSS', 'WebSockets'],
+    id: 'spa-rio-cristales',
+    title: 'Spa Río Cristales - Experiencia Digital & Branding Sensorial',
+    client: 'Spa Río Cristales',
+    category: 'branding',
+    summary: 'Sitio web inmersivo, identidad visual y experiencia digital de relajación.',
+    description: 'Renovación de branding corporativo y diseño de plataforma web con catálogos de servicios, reservas interactivas y estética visual enfocada en el bienestar y el lujo.',
+    image: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=800&q=80',
+    technologies: ['React', 'Tailwind CSS', 'Framer Motion', 'Branding UI/UX'],
     metrics: [
-      { label: 'Ahorro de combustible', value: '22.5%' },
-      { label: 'Reducción de fallas', value: '-40%' },
-      { label: 'Retorno inversión', value: '3 meses' }
+      { label: 'Reservas online', value: '+240%' },
+      { label: 'Engagement', value: '94%' },
+      { label: 'Conversión', value: '12.5%' }
     ],
-    year: '2024'
+    year: '2026',
+    featured: true,
+    country: '🇲🇽 México'
+  },
+  {
+    id: 'essenya-spa',
+    title: 'Essenya Spa a Domicilio - Plataforma Web & Reservas Automatizadas',
+    client: 'Essenya Spa',
+    category: 'automation',
+    summary: 'Plataforma web con sistema de reservas en tiempo real y automatización de citas.',
+    description: 'Implementación de sistema web a medida con motor de reservas automatizadas, pasarela de confirmación vía WhatsApp y branding integral para servicios de spa a domicilio.',
+    image: 'https://images.unsplash.com/photo-1519823551278-64ac92734fb1?auto=format&fit=crop&w=800&q=80',
+    technologies: ['React', 'Node.js', 'Make / n8n', 'WhatsApp API', 'Tailwind'],
+    metrics: [
+      { label: 'Citas automáticas', value: '85%' },
+      { label: 'Ahorro operativo', value: '25 hrs/sem' },
+      { label: 'Satisfacción', value: '4.9 ★' }
+    ],
+    year: '2026',
+    featured: true,
+    country: '🇲🇽 México'
+  },
+  {
+    id: 'floreria-nas-lizz',
+    title: 'Florería Nas & Lizz - Catálogo Digital & Diseño Gráfico Exclusivo',
+    client: 'Florería Nas & Lizz',
+    category: 'web',
+    summary: 'Sitio web con catálogo digital interactivo y diseño gráfico de alta conversión.',
+    description: 'Creación de tienda virtual y catálogo digital optimizado para pedidos rápidos con galerías fotográficas en alta resolución e identidad visual floral refinada.',
+    image: 'https://images.unsplash.com/photo-1526047932273-341f2a7631f9?auto=format&fit=crop&w=800&q=80',
+    technologies: ['React', 'Tailwind CSS', 'E-commerce UI', 'Cloudinary'],
+    metrics: [
+      { label: 'Pedidos online', value: '+310%' },
+      { label: 'Visualizaciones', value: '+15k/mes' },
+      { label: 'Ticket promedio', value: '+35%' }
+    ],
+    year: '2026',
+    country: '🇲🇽 México'
+  },
+  {
+    id: 'landing-xv-fernanda-kaori',
+    title: 'Landing Page XV Fernanda Kaori - Invitación Digital & RSVP',
+    client: 'Familia Kaori',
+    category: 'web',
+    summary: 'Invitación digital interactiva con confirmación de asistencia RSVP y galería multimedia.',
+    description: 'Desarrollo de landing page temática de lujo para celebración de XV años, con música ambiental opcional, cuenta regresiva, confirmación de asistencia automatizada y mapa interactivo.',
+    image: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80',
+    technologies: ['React', 'Tailwind CSS', 'Framer Motion', 'Firebase'],
+    metrics: [
+      { label: 'RSVP confirmados', value: '98%' },
+      { label: 'Invitados', value: '+300' },
+      { label: 'Experiencia', value: '100% Digital' }
+    ],
+    year: '2026',
+    country: '🇲🇽 México'
+  },
+  {
+    id: 'graphixglow-corp',
+    title: 'GraphixGlow Tech - Plataforma Tecnológica & IA Autónoma',
+    client: 'GraphixGlow Agency',
+    category: 'ia',
+    summary: 'Sitio corporativo, plataforma tecnológica y núcleo de Inteligencia Artificial.',
+    description: 'Nuestro propio ecosistema digital con motor de IA integrado, pasarela de diagnósticos inteligentes y arquitecturas de alto rendimiento bajo estándares globales.',
+    image: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80',
+    technologies: ['React 19', 'TypeScript', 'Gemini API', 'Tailwind CSS', 'Express'],
+    metrics: [
+      { label: 'Performance', value: '100 pts' },
+      { label: 'Agentes activos', value: '24/7' },
+      { label: 'Proyectos entregados', value: '+120' }
+    ],
+    year: '2026',
+    featured: true,
+    country: '🇲🇽 México'
+  },
+  {
+    id: 'eco-glamping-chinauta',
+    title: 'Eco Glamping Chinauta - Portal Turístico, Branding & Marketing',
+    client: 'Eco Glamping Chinauta',
+    category: 'marketing',
+    summary: 'Sitio web turístico, identidad de marca y estrategia de marketing digital.',
+    description: 'Diseño web inmersivo para complejo eco-turístico en Colombia, integrando motor de reservas de cabañas, branding naturalista y campañas publicitarias de alta conversión.',
+    image: 'https://images.unsplash.com/photo-1510312305653-8ed496efae75?auto=format&fit=crop&w=800&q=80',
+    technologies: ['React', 'Next.js', 'Meta Ads', 'SEO Local', 'Tailwind'],
+    metrics: [
+      { label: 'Ocupación', value: '95%' },
+      { label: 'ROAS Publicitario', value: '5.2x' },
+      { label: 'Reservas directas', value: '+280%' }
+    ],
+    year: '2025',
+    featured: true,
+    country: '🇨🇴 Colombia'
+  },
+  {
+    id: 'inspiracion-spa-col',
+    title: 'Inspiración Spa - Sitio Web, Branding & Experiencia Digital',
+    client: 'Inspiración Spa',
+    category: 'web',
+    summary: 'Plataforma web, identidad de marca y experiencia digital de bienestar.',
+    description: 'Creación de imagen de marca y portal web interactivo para centro de estética y relajación en Colombia, destacando tratamientos especializados y reserva de experiencias.',
+    image: 'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&w=800&q=80',
+    technologies: ['React', 'Tailwind CSS', 'UI/UX Design', 'SEO'],
+    metrics: [
+      { label: 'Nuevos clientes', value: '+190%' },
+      { label: 'Tasa rebote', value: '18%' },
+      { label: 'Satisfacción', value: '4.9 ★' }
+    ],
+    year: '2025',
+    country: '🇨🇴 Colombia'
   }
 ];
 

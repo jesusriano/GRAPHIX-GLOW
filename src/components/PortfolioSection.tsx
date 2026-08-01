@@ -54,14 +54,14 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = React.memo(({
           </div>
 
           <h2 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight mb-4">
-            Portafolio de{' '}
+            Proyectos con los que{' '}
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-300 via-blue-400 to-indigo-300 drop-shadow-[0_0_15px_rgba(0,210,255,0.4)]">
-              Proyectos Destacados
+              hemos trabajado
             </span>
           </h2>
 
-          <p className="text-slate-300 font-light text-base sm:text-lg">
-            Explora las soluciones tecnológicas que hemos diseñado e implementado para marcas líderes.
+          <p className="text-slate-300 font-light text-sm sm:text-base leading-relaxed">
+            Cada proyecto representa una solución desarrollada por GraphixGlow para clientes reales, combinando diseño, desarrollo web, automatización, branding e inteligencia artificial para impulsar negocios y experiencias digitales de alto nivel.
           </p>
         </motion.div>
 
@@ -130,6 +130,14 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = React.memo(({
                     <span>{project.client}</span>
                   </span>
                 </div>
+
+                {project.country && (
+                  <div className="absolute top-4 right-4">
+                    <span className="px-2.5 py-1 rounded-full bg-slate-950/90 border border-white/20 text-white text-[11px] font-mono backdrop-blur-md shadow-lg">
+                      {project.country}
+                    </span>
+                  </div>
+                )}
 
                 <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between">
                   <span className="text-xs text-slate-300 font-mono">Año: {project.year}</span>
