@@ -169,7 +169,7 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = React.mem
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
               transition={{ duration: 0.4 }}
-              className="p-8 sm:p-12 rounded-3xl bg-gradient-to-br from-slate-900/90 via-blue-950/40 to-slate-900/90 border border-cyan-500/30 backdrop-blur-xl shadow-[0_0_50px_rgba(0,102,255,0.2)] relative min-h-[280px] flex flex-col justify-between"
+              className="p-8 sm:p-12 rounded-3xl bg-gradient-to-br from-slate-900/90 via-blue-950/40 to-slate-900/90 border border-cyan-500/30 backdrop-blur-xl shadow-[0_0_50px_rgba(0,102,255,0.2)] relative"
             >
               <Quote className="w-12 h-12 text-cyan-500/20 absolute top-6 right-8" />
 
