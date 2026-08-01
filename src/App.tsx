@@ -23,6 +23,7 @@ import {
 const AboutSection = lazy(() => import('./components/AboutSection').then(m => ({ default: m.AboutSection })));
 const ServicesSection = lazy(() => import('./components/ServicesSection').then(m => ({ default: m.ServicesSection })));
 const PortfolioSection = lazy(() => import('./components/PortfolioSection').then(m => ({ default: m.PortfolioSection })));
+const SuccessStoriesSection = lazy(() => import('./components/SuccessStoriesSection').then(m => ({ default: m.SuccessStoriesSection })));
 const ProcessSection = lazy(() => import('./components/ProcessSection').then(m => ({ default: m.ProcessSection })));
 const PricingSection = lazy(() => import('./components/PricingSection').then(m => ({ default: m.PricingSection })));
 const TestimonialsSection = lazy(() => import('./components/TestimonialsSection').then(m => ({ default: m.TestimonialsSection })));
@@ -271,7 +272,15 @@ export default function App() {
                   {/* Interactive ROI Calculator */}
                   <RoiCalculator
                     onOpenQuote={() => {
-                      setSelectedQuoteService('Desarrollo Web & IA');
+                      setSelectedQuoteService('Desarrollo Web & Transformación Digital');
+                      setIsQuoteModalOpen(true);
+                    }}
+                  />
+
+                  {/* Measurable Success Stories Section */}
+                  <SuccessStoriesSection
+                    onOpenQuote={(serviceName) => {
+                      setSelectedQuoteService(serviceName || 'Transformación Digital');
                       setIsQuoteModalOpen(true);
                     }}
                   />
@@ -329,7 +338,13 @@ export default function App() {
 
               {/* 4. PORTAFOLIO PAGE */}
               {activeSection === 'portfolio' && (
-                <div className="pb-16">
+                <div className="space-y-12 pb-16">
+                  <SuccessStoriesSection
+                    onOpenQuote={(serviceName) => {
+                      setSelectedQuoteService(serviceName || 'Transformación Digital');
+                      setIsQuoteModalOpen(true);
+                    }}
+                  />
                   <PortfolioSection
                     projects={portfolio}
                     onOpenQuote={() => setIsQuoteModalOpen(true)}
