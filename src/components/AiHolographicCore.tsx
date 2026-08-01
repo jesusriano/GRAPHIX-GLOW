@@ -6,7 +6,7 @@ interface AiHolographicCoreProps {
   onOpenAiChat: () => void;
 }
 
-export const AiHolographicCore: React.FC<AiHolographicCoreProps> = ({ onOpenAiChat }) => {
+export const AiHolographicCore: React.FC<AiHolographicCoreProps> = React.memo(({ onOpenAiChat }) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const mousePos = useRef({ x: 0, y: 0, targetX: 0, targetY: 0 });
 
@@ -277,4 +277,5 @@ export const AiHolographicCore: React.FC<AiHolographicCoreProps> = ({ onOpenAiCh
       />
     </div>
   );
-};
+});
+

@@ -6,7 +6,7 @@ interface BrandLogoProps {
   showSubtitle?: boolean;
 }
 
-export const BrandLogo: React.FC<BrandLogoProps> = ({ size = 'md', showSubtitle = true }) => {
+export const BrandLogo: React.FC<BrandLogoProps> = React.memo(({ size = 'md', showSubtitle = true }) => {
   const [imgError, setImgError] = useState(false);
 
   const sizeMap = {
@@ -62,7 +62,7 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({ size = 'md', showSubtitle 
       </div>
     </div>
   );
-};
+});
 
 
 

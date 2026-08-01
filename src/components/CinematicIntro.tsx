@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ArrowRight, Sparkles } from 'lucide-react';
 
@@ -6,13 +6,11 @@ interface CinematicIntroProps {
   onComplete: () => void;
 }
 
-export const CinematicIntro: React.FC<CinematicIntroProps> = ({ onComplete }) => {
+export const CinematicIntro: React.FC<CinematicIntroProps> = React.memo(({ onComplete }) => {
   const [isFinished, setIsFinished] = useState(false);
 
   useEffect(() => {
     // Total animation runtime: ~1.7 seconds (1700ms)
-    // 0ms - 1400ms: Light sweep beam travels left-to-right revealing live UI
-    // 1400ms - 1700ms: Smooth overlay resolution & handover to page
     const completeTimer = setTimeout(() => {
       setIsFinished(true);
       setTimeout(onComplete, 300);
@@ -22,14 +20,16 @@ export const CinematicIntro: React.FC<CinematicIntroProps> = ({ onComplete }) =>
   }, [onComplete]);
 
   // Generate subtle floating luminous blue particles riding along light beam path
-  const particles = Array.from({ length: 14 }).map((_, i) => ({
-    id: i,
-    top: `${12 + (i * 6) % 75}%`,
-    left: `${(i * 7.5) % 85}%`,
-    size: 2 + (i % 3) * 1.5,
-    delay: (i * 0.08) % 0.5,
-    duration: 1.0 + (i % 3) * 0.4,
-  }));
+  const particles = useMemo(() => {
+    return Array.from({ length: 6 }).map((_, i) => ({
+      id: i,
+      top: `${15 + (i * 12) % 65}%`,
+      left: `${(i * 15) % 80}%`,
+      size: 2 + (i % 2) * 1.5,
+      delay: (i * 0.1) % 0.4,
+      duration: 1.2 + (i % 2) * 0.4,
+    }));
+  }, []);
 
   return (
     <AnimatePresence>
@@ -150,5 +150,5 @@ export const CinematicIntro: React.FC<CinematicIntroProps> = ({ onComplete }) =>
       )}
     </AnimatePresence>
   );
-};
+});
 

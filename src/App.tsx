@@ -4,6 +4,7 @@ import { CinematicIntro } from './components/CinematicIntro';
 import { Header } from './components/Header';
 import { Hero } from './components/Hero';
 import { Footer } from './components/Footer';
+import { InViewDeferred } from './components/InViewDeferred';
 import { Sparkles, ArrowRight, ShieldCheck, Zap } from 'lucide-react';
 
 import founderPhoto from './assets/images/jesus_riano_founder_1785356395649.jpg';
@@ -270,34 +271,42 @@ export default function App() {
                   </div>
 
                   {/* Interactive AI Agent Simulator */}
-                  <AiAgentSimulator
-                    onOpenQuote={() => {
-                      setSelectedQuoteService('Agentes de Inteligencia Artificial');
-                      setIsQuoteModalOpen(true);
-                    }}
-                  />
+                  <InViewDeferred minHeight="400px">
+                    <AiAgentSimulator
+                      onOpenQuote={() => {
+                        setSelectedQuoteService('Agentes de Inteligencia Artificial');
+                        setIsQuoteModalOpen(true);
+                      }}
+                    />
+                  </InViewDeferred>
 
                   {/* Interactive ROI Calculator */}
-                  <RoiCalculator
-                    onOpenQuote={() => {
-                      setSelectedQuoteService('Desarrollo Web & Transformación Digital');
-                      setIsQuoteModalOpen(true);
-                    }}
-                  />
+                  <InViewDeferred minHeight="350px">
+                    <RoiCalculator
+                      onOpenQuote={() => {
+                        setSelectedQuoteService('Desarrollo Web & Transformación Digital');
+                        setIsQuoteModalOpen(true);
+                      }}
+                    />
+                  </InViewDeferred>
 
                   {/* Measurable Success Stories Section */}
-                  <SuccessStoriesSection
-                    onOpenQuote={(serviceName) => {
-                      setSelectedQuoteService(serviceName || 'Transformación Digital');
-                      setIsQuoteModalOpen(true);
-                    }}
-                  />
+                  <InViewDeferred minHeight="450px">
+                    <SuccessStoriesSection
+                      onOpenQuote={(serviceName) => {
+                        setSelectedQuoteService(serviceName || 'Transformación Digital');
+                        setIsQuoteModalOpen(true);
+                      }}
+                    />
+                  </InViewDeferred>
 
                   {/* Testimonials Preview */}
-                  <TestimonialsSection
-                    testimonials={INITIAL_TESTIMONIALS}
-                    clientLogos={INITIAL_CLIENT_LOGOS}
-                  />
+                  <InViewDeferred minHeight="300px">
+                    <TestimonialsSection
+                      testimonials={INITIAL_TESTIMONIALS}
+                      clientLogos={INITIAL_CLIENT_LOGOS}
+                    />
+                  </InViewDeferred>
 
                   {/* Direct CTA Banner */}
                   <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -405,34 +414,42 @@ export default function App() {
 
       <Suspense fallback={null}>
         {/* AI Assistant Chat Panel */}
-        <AiChatWidget
-          isOpen={isAiChatOpen}
-          onClose={() => setIsAiChatOpen(false)}
-          onOpenQuote={() => setIsQuoteModalOpen(true)}
-        />
+        {isAiChatOpen && (
+          <AiChatWidget
+            isOpen={isAiChatOpen}
+            onClose={() => setIsAiChatOpen(false)}
+            onOpenQuote={() => setIsQuoteModalOpen(true)}
+          />
+        )}
 
         {/* Admin Dashboard Modal */}
-        <AdminDashboard
-          isOpen={isAdminDashboardOpen}
-          onClose={() => setIsAdminDashboardOpen(false)}
-          blogPosts={blogPosts}
-          onUpdatePosts={setBlogPosts}
-          portfolioProjects={portfolio}
-          onUpdateProjects={setPortfolio}
-        />
+        {isAdminDashboardOpen && (
+          <AdminDashboard
+            isOpen={isAdminDashboardOpen}
+            onClose={() => setIsAdminDashboardOpen(false)}
+            blogPosts={blogPosts}
+            onUpdatePosts={setBlogPosts}
+            portfolioProjects={portfolio}
+            onUpdateProjects={setPortfolio}
+          />
+        )}
 
         {/* Technical SEO Inspector Modal */}
-        <SeoToolsModal
-          isOpen={isSeoModalOpen}
-          onClose={() => setIsSeoModalOpen(false)}
-        />
+        {isSeoModalOpen && (
+          <SeoToolsModal
+            isOpen={isSeoModalOpen}
+            onClose={() => setIsSeoModalOpen(false)}
+          />
+        )}
 
         {/* Quote Request Modal */}
-        <QuoteModal
-          isOpen={isQuoteModalOpen}
-          onClose={() => setIsQuoteModalOpen(false)}
-          preselectedService={selectedQuoteService}
-        />
+        {isQuoteModalOpen && (
+          <QuoteModal
+            isOpen={isQuoteModalOpen}
+            onClose={() => setIsQuoteModalOpen(false)}
+            preselectedService={selectedQuoteService}
+          />
+        )}
       </Suspense>
     </div>
   );

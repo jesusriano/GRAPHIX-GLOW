@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 
-export const BackgroundParticles: React.FC = () => {
+export const BackgroundParticles: React.FC = React.memo(() => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
@@ -17,6 +17,7 @@ export const BackgroundParticles: React.FC = () => {
 
     let mouseX = -1000;
     let mouseY = -1000;
+    let lastMouseTime = 0;
 
     const handleResize = () => {
       if (!canvas) return;
@@ -25,12 +26,20 @@ export const BackgroundParticles: React.FC = () => {
     };
 
     const handleMouseMove = (e: MouseEvent) => {
+      const now = Date.now();
+      if (now - lastMouseTime < 33) return; // ~30fps throttle
+      lastMouseTime = now;
       mouseX = e.clientX;
       mouseY = e.clientY;
     };
 
-    window.addEventListener('resize', handleResize);
-    window.addEventListener('mousemove', handleMouseMove);
+    const handleVisibilityChange = () => {
+      isVisible = !document.hidden;
+    };
+
+    window.addEventListener('resize', handleResize, { passive: true });
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
+    document.addEventListener('visibilitychange', handleVisibilityChange);
 
     // IntersectionObserver to pause when not visible
     const observer = new IntersectionObserver(
@@ -186,6 +195,7 @@ export const BackgroundParticles: React.FC = () => {
     return () => {
       window.removeEventListener('resize', handleResize);
       window.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
       observer.disconnect();
       cancelAnimationFrame(animationFrameId);
     };
@@ -197,4 +207,5 @@ export const BackgroundParticles: React.FC = () => {
       className="fixed inset-0 pointer-events-none z-0 opacity-80"
     />
   );
-};
+});
+
