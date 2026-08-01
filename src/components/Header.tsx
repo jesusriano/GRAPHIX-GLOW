@@ -102,6 +102,7 @@ export const Header: React.FC<HeaderProps> = React.memo(({
           <button
             onClick={onOpenAiChat}
             title="Asistente de Inteligencia Artificial"
+            aria-label="Abrir asistente de Inteligencia Artificial"
             className="p-2.5 rounded-xl bg-cyan-950/40 hover:bg-cyan-900/60 border border-cyan-500/30 text-cyan-300 hover:text-white transition cursor-pointer relative shadow-[0_0_15px_rgba(0,210,255,0.15)] flex items-center gap-2 group"
           >
             <Bot className="w-4 h-4 text-cyan-400 group-hover:scale-110 transition-transform" />
@@ -113,6 +114,7 @@ export const Header: React.FC<HeaderProps> = React.memo(({
           <button
             onClick={onReplayIntro}
             title="Reproducir Intro Cinemática"
+            aria-label="Reproducir intro cinemática"
             className="p-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300 hover:text-white transition cursor-pointer"
           >
             <RotateCcw className="w-4 h-4" />
@@ -121,6 +123,7 @@ export const Header: React.FC<HeaderProps> = React.memo(({
           {/* Primary CTA */}
           <button
             onClick={onOpenQuote}
+            aria-label="Abrir formulario de cotización"
             className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-cyan-400 via-blue-600 to-indigo-600 text-white font-bold text-xs tracking-wide shadow-[0_0_25px_rgba(0,102,255,0.5)] hover:shadow-[0_0_35px_rgba(0,210,255,0.7)] hover:scale-105 active:scale-95 transition-all cursor-pointer flex items-center gap-2"
           >
             <Sparkles className="w-3.5 h-3.5 text-cyan-200" />
@@ -132,6 +135,7 @@ export const Header: React.FC<HeaderProps> = React.memo(({
         <div className="flex sm:hidden items-center gap-2">
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label={mobileMenuOpen ? 'Cerrar menú de navegación' : 'Abrir menú de navegación'}
             className="p-2.5 rounded-xl bg-white/5 border border-white/10 text-white"
           >
             {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}

@@ -70,16 +70,16 @@ export const Footer: React.FC<FooterProps> = React.memo(({ onOpenQuote, onNaviga
 
             {/* Social Icons */}
             <div className="flex items-center gap-3 pt-2">
-              <a href="#" className="p-2.5 rounded-xl bg-white/5 hover:bg-cyan-500/20 text-slate-300 hover:text-cyan-300 transition">
+              <a href="#" aria-label="Visitar perfil de LinkedIn" className="p-2.5 rounded-xl bg-white/5 hover:bg-cyan-500/20 text-slate-300 hover:text-cyan-300 transition">
                 <Linkedin className="w-4 h-4" />
               </a>
-              <a href="#" className="p-2.5 rounded-xl bg-white/5 hover:bg-cyan-500/20 text-slate-300 hover:text-cyan-300 transition">
+              <a href="#" aria-label="Visitar perfil de Twitter/X" className="p-2.5 rounded-xl bg-white/5 hover:bg-cyan-500/20 text-slate-300 hover:text-cyan-300 transition">
                 <Twitter className="w-4 h-4" />
               </a>
-              <a href="#" className="p-2.5 rounded-xl bg-white/5 hover:bg-cyan-500/20 text-slate-300 hover:text-cyan-300 transition">
+              <a href="#" aria-label="Visitar perfil de Instagram" className="p-2.5 rounded-xl bg-white/5 hover:bg-cyan-500/20 text-slate-300 hover:text-cyan-300 transition">
                 <Instagram className="w-4 h-4" />
               </a>
-              <a href="#" className="p-2.5 rounded-xl bg-white/5 hover:bg-cyan-500/20 text-slate-300 hover:text-cyan-300 transition">
+              <a href="#" aria-label="Visitar repositorio de GitHub" className="p-2.5 rounded-xl bg-white/5 hover:bg-cyan-500/20 text-slate-300 hover:text-cyan-300 transition">
                 <Github className="w-4 h-4" />
               </a>
             </div>
@@ -163,7 +163,7 @@ export const Footer: React.FC<FooterProps> = React.memo(({ onOpenQuote, onNaviga
           </div>
 
           <div className="flex items-center gap-4">
-            <button onClick={scrollToTop} className="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 transition cursor-pointer flex items-center gap-2">
+            <button onClick={scrollToTop} aria-label="Volver arriba de la página" className="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 transition cursor-pointer flex items-center gap-2">
               <span>Volver arriba</span>
               <ArrowUp className="w-4 h-4" />
             </button>
@@ -175,6 +175,7 @@ export const Footer: React.FC<FooterProps> = React.memo(({ onOpenQuote, onNaviga
       <motion.button
         onClick={openWhatsapp}
         title="Contactar por WhatsApp"
+        aria-label="Abrir conversación de WhatsApp"
         animate={{
           y: [0, -8, 0],
           boxShadow: [
