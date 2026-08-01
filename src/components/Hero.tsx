@@ -112,7 +112,7 @@ export const Hero: React.FC<HeroProps> = ({
             >
               <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
               <Zap className="w-4 h-4 text-cyan-400" />
-              <span>Agencia de Transformación Digital & IA de Próxima Generación</span>
+              <span>Agencia de Transformación & Crecimiento Digital</span>
             </motion.div>
 
             {/* Main Title with Elegant Proportion & Shimmer Accent */}
@@ -126,14 +126,14 @@ export const Hero: React.FC<HeroProps> = ({
                 transition={{ duration: 0.8 }}
                 className="block animate-shimmer-text"
               >
-                Transformamos empresas con{' '}
+                Impulsamos el{' '}
                 <span className="inline-block relative">
                   <span className="animate-shimmer-text drop-shadow-[0_0_35px_rgba(0,210,255,0.6)] font-black">
-                    Inteligencia Artificial
+                    crecimiento real
                   </span>
                   <span className="absolute -inset-1 bg-cyan-500/20 blur-xl -z-10 rounded-2xl opacity-60 pointer-events-none" />
                 </span>{' '}
-                & desarrollo web de <span className="bg-gradient-to-r from-cyan-400 via-indigo-300 to-purple-400 bg-clip-text text-transparent font-black italic">ultra lujo</span>
+                de tu empresa con <span className="bg-gradient-to-r from-cyan-400 via-indigo-300 to-purple-400 bg-clip-text text-transparent font-black">tecnología, diseño & marketing</span>
               </motion.span>
             </motion.h1>
 
@@ -144,7 +144,7 @@ export const Hero: React.FC<HeroProps> = ({
               transition={{ duration: 0.8, delay: 0.35 }}
               className="text-base sm:text-lg text-slate-300 font-light leading-relaxed mb-8 max-w-2xl"
             >
-              Especialistas en plataformas de alto rendimiento, agentes autónomos de IA y estrategias tecnológicas diseñadas para posicionar tu marca en la cima de tu industria.
+              Desarrollamos páginas web de alto impacto, plataformas a medida, campañas de captación y estrategias digitales optimizadas con IA para acelerar tus ventas y consolidar tu marca.
             </motion.p>
 
             {/* Premium Animated CTA Buttons */}

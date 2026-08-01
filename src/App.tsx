@@ -9,6 +9,9 @@ import { AiAgentSimulator } from './components/AiAgentSimulator';
 import { RoiCalculator } from './components/RoiCalculator';
 import { Sparkles, ArrowRight, ShieldCheck, Zap } from 'lucide-react';
 
+import founderPhoto from './assets/images/jesus_riano_founder_1785356395649.jpg';
+import logoPhoto from './assets/images/jr_graphixglow_logo_1785360293197.jpg';
+
 import { 
   INITIAL_SERVICES, 
   INITIAL_PORTFOLIO, 
@@ -77,10 +80,7 @@ export default function App() {
       import('./components/ContactSection');
     };
 
-    const imagePreloads = [
-      '/jr_graphixglow_logo_1785360293197-CuFweDWG.jpg',
-      '/jesus_riano_founder_1785356395649-DmcyIIPs.jpg'
-    ];
+    const imagePreloads = [logoPhoto, founderPhoto];
     imagePreloads.forEach((src) => {
       const img = new Image();
       img.src = src;
