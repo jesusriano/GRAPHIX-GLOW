@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { BlogPost, Comment } from '../types';
 import { OptimizedImage } from './OptimizedImage';
+import { BlogSkeleton } from './Skeletons';
 import { 
   Sparkles, 
   Clock, 

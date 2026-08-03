@@ -67,6 +67,7 @@ export const OptimizedImage: React.FC<OptimizedImageProps> = React.memo(({
           height={height}
           loading={priority ? 'eager' : 'lazy'}
           decoding={priority ? 'sync' : 'async'}
+          fetchPriority={priority ? 'high' : 'auto'}
           onLoad={() => setIsLoaded(true)}
           onError={handleError}
           className={imgClassName}
@@ -109,6 +110,7 @@ export const OptimizedImage: React.FC<OptimizedImageProps> = React.memo(({
         height={height}
         loading={priority ? 'eager' : 'lazy'}
         decoding={priority ? 'sync' : 'async'}
+        fetchPriority={priority ? 'high' : 'auto'}
         onLoad={() => setIsLoaded(true)}
         onError={handleError}
         className={imgClassName}

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Testimonial, ClientLogo } from '../types';
 import { OptimizedImage } from './OptimizedImage';
+import { TestimonialsSkeleton } from './Skeletons';
 import { 
   Sparkles, 
   Star, 

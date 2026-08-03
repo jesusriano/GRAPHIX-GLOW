@@ -28,6 +28,7 @@
   -webkit-background-clip: text;
   background-clip: text;
   animation: shimmerSweep 6s ease-in-out infinite;
+  will-change: background-position;
 }
 
 @keyframes pulseGlow {
@@ -41,6 +42,7 @@
 
 .animate-glow-pulse {
   animation: pulseGlow 4s ease-in-out infinite;
+  will-change: opacity, box-shadow;
 }
 
 @keyframes floatSlow {
@@ -54,6 +56,7 @@
 
 .animate-float-slow {
   animation: floatSlow 6s ease-in-out infinite;
+  will-change: transform;
 }
 
 @keyframes iconFloat {
@@ -67,6 +70,7 @@
 
 .animate-icon-float {
   animation: iconFloat 4s ease-in-out infinite;
+  will-change: transform;
 }
 
 .live-border-card {
@@ -103,6 +107,14 @@
   opacity: 1;
 }
 
+@media (max-width: 768px) {
+  .animate-shimmer-text,
+  .animate-glow-pulse {
+    animation-delay: 2.5s !important;
+    animation-iteration-count: 2 !important;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   ::before,
@@ -117,24 +129,5 @@
   .animate-float-slow,
   .animate-icon-float {
     animation: none !important;
-  }
-}
-
-
-
-
-@media (max-width: 768px) {
-  .animate-shimmer-text {
-    animation-iteration-count: 2 !important;
-  }
-  .animate-glow-pulse {
-    animation-iteration-count: 2 !important;
-  }
-}
-
-@media (max-width: 768px) {
-  .animate-shimmer-text,
-  .animate-glow-pulse {
-    animation-delay: 2.5s !important;
   }
 }

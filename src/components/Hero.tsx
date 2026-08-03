@@ -100,9 +100,9 @@ export const Hero: React.FC<HeroProps> = React.memo(({
             {/* Top Floating Pill Tag */}
             <motion.div
               style={{ x: x1, y: y1 }}
-              initial={{ opacity: 0, y: -20 }}
+              initial={{ opacity: 1, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
+              transition={{ duration: 0.5 }}
               className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-xs md:text-sm font-mono backdrop-blur-md mb-6 shadow-[0_0_20px_rgba(0,210,255,0.15)]"
             >
               <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
@@ -116,9 +116,9 @@ export const Hero: React.FC<HeroProps> = React.memo(({
             >
               <motion.span
                 style={{ x: x2, y: y2 }}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 1, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8 }}
+                transition={{ duration: 0.6 }}
                 className="block animate-shimmer-text"
               >
                 Impulsamos el{' '}
@@ -134,9 +134,9 @@ export const Hero: React.FC<HeroProps> = React.memo(({
 
             {/* Concise Subtitle with High Readability */}
             <motion.p
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 1, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.35 }}
+              transition={{ duration: 0.6, delay: 0.15 }}
               className="text-base sm:text-lg text-slate-300 font-light leading-relaxed mb-8 max-w-2xl"
             >
               Desarrollamos páginas web de alto impacto, plataformas a medida, campañas de captación y estrategias digitales optimizadas con IA para acelerar tus ventas y consolidar tu marca.
@@ -144,9 +144,9 @@ export const Hero: React.FC<HeroProps> = React.memo(({
 
             {/* Premium Animated CTA Buttons */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 1, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.5 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
               className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 w-full sm:w-auto mb-8"
             >
               {/* Primary Glowing Button with Shimmer Sweep */}
@@ -180,7 +180,7 @@ export const Hero: React.FC<HeroProps> = React.memo(({
               style={{ x: x1, y: y1 }}
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 1, delay: 0.3, ease: 'easeOut' }}
+              transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}
               className="w-full flex justify-center"
             >
               <Suspense fallback={<div className="w-full aspect-square" />}>
@@ -192,9 +192,9 @@ export const Hero: React.FC<HeroProps> = React.memo(({
 
         {/* Feature Badges Grid with Animated Numbers */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 1, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.8 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
           className="grid grid-cols-2 md:grid-cols-4 gap-4 w-full"
         >
           <motion.div 
