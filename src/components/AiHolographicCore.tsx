@@ -23,16 +23,35 @@ export const AiHolographicCore: React.FC<AiHolographicCoreProps> = React.memo(({
 
     let animationFrameId: number;
     let isVisible = true;
-    let width = (canvas.width = canvas.offsetWidth * window.devicePixelRatio);
-    let height = (canvas.height = canvas.offsetHeight * window.devicePixelRatio);
+    let width = 0;
+    let height = 0;
+
+    const updateDimensions = () => {
+      if (!canvas) return;
+      const w = canvas.offsetWidth;
+      const h = canvas.offsetHeight;
+      if (w > 0 && h > 0) {
+        width = canvas.width = w * window.devicePixelRatio;
+        height = canvas.height = h * window.devicePixelRatio;
+      }
+    };
+
+    updateDimensions();
 
     const handleResize = () => {
-      if (!canvas) return;
-      width = canvas.width = canvas.offsetWidth * window.devicePixelRatio;
-      height = canvas.height = canvas.offsetHeight * window.devicePixelRatio;
+      isVisible = true;
+      requestAnimationFrame(() => {
+        updateDimensions();
+        cancelAnimationFrame(animationFrameId);
+        animationFrameId = requestAnimationFrame(render);
+      });
+      // Fallback timeouts for mobile orientation reflow delays
+      setTimeout(updateDimensions, 100);
+      setTimeout(updateDimensions, 300);
     };
 
     window.addEventListener('resize', handleResize);
+    window.addEventListener('orientationchange', handleResize);
 
     const handleMouseMove = (e: MouseEvent) => {
       const rect = canvas.getBoundingClientRect();
@@ -281,6 +300,7 @@ export const AiHolographicCore: React.FC<AiHolographicCoreProps> = React.memo(({
     return () => {
       cancelAnimationFrame(animationFrameId);
       window.removeEventListener('resize', handleResize);
+      window.removeEventListener('orientationchange', handleResize);
       if (parent) {
         parent.removeEventListener('mousemove', handleMouseMove);
       }

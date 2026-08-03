@@ -52,25 +52,28 @@ export const OptimizedImage: React.FC<OptimizedImageProps> = React.memo(({
     }
   };
 
+  const imgClassName = `transition-opacity duration-300 ${
+    isLoaded ? 'opacity-100' : 'opacity-80'
+  } ${className.includes('object-') || className.includes('w-') || className.includes('h-') ? className : 'w-full h-full object-cover'}`;
+
   // Standard img element for local static assets (Vite asset imports) or direct URLs
   if (!isUnsplash) {
     return (
-      <img
-        src={currentSrc}
-        alt={alt}
-        width={width}
-        height={height}
-        loading={priority ? 'eager' : 'lazy'}
-        decoding={priority ? 'sync' : 'async'}
-        onLoad={() => setIsLoaded(true)}
-        onError={handleError}
-        className={`${className} transition-opacity duration-300 ${
-          isLoaded ? 'opacity-100' : 'opacity-85'
-        }`}
-        style={style}
-        referrerPolicy="no-referrer"
-        {...props}
-      />
+      <picture className={`block overflow-hidden ${className.includes('w-') ? '' : 'w-full'} ${className.includes('h-') ? '' : 'h-full'}`} style={style}>
+        <img
+          src={currentSrc}
+          alt={alt}
+          width={width}
+          height={height}
+          loading={priority ? 'eager' : 'lazy'}
+          decoding={priority ? 'sync' : 'async'}
+          onLoad={() => setIsLoaded(true)}
+          onError={handleError}
+          className={imgClassName}
+          referrerPolicy="no-referrer"
+          {...props}
+        />
+      </picture>
     );
   }
 
@@ -91,7 +94,7 @@ export const OptimizedImage: React.FC<OptimizedImageProps> = React.memo(({
   const origSrcSet = `${mobileOrig} ${mobileWidth}w, ${desktopOrig} ${desktopWidth}w`;
 
   return (
-    <picture className="contents">
+    <picture className={`block overflow-hidden ${className.includes('w-') ? '' : 'w-full'} ${className.includes('h-') ? '' : 'h-full'}`} style={style}>
       <source
         type="image/webp"
         srcSet={webpSrcSet}
@@ -108,10 +111,7 @@ export const OptimizedImage: React.FC<OptimizedImageProps> = React.memo(({
         decoding={priority ? 'sync' : 'async'}
         onLoad={() => setIsLoaded(true)}
         onError={handleError}
-        className={`${className} transition-opacity duration-300 ${
-          isLoaded ? 'opacity-100' : 'opacity-85'
-        }`}
-        style={style}
+        className={imgClassName}
         referrerPolicy="no-referrer"
         {...props}
       />
