@@ -43,7 +43,13 @@ export const InViewDeferred: React.FC<InViewDeferredProps> = React.memo(({
 
   return (
     <div ref={ref} style={{ minHeight, width: '100%' }}>
-      {isInView ? children : fallback}
+      {isInView ? (
+        <React.Suspense fallback={fallback}>
+          {children}
+        </React.Suspense>
+      ) : (
+        fallback
+      )}
     </div>
   );
 });
