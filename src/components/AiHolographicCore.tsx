@@ -127,14 +127,21 @@ export const AiHolographicCore: React.FC<AiHolographicCoreProps> = React.memo(({
 
     let time = 0;
     let lastRenderTime = 0;
+    let initialStartTime = 0;
+    const isMobileDevice = typeof window !== 'undefined' && window.innerWidth < 1024;
 
     const render = (timeMs: number) => {
       if (!isVisible) return;
+      if (!initialStartTime) initialStartTime = timeMs;
 
       animationFrameId = requestAnimationFrame(render);
 
-      // Frame rate throttle to ~30fps to keep main thread completely unblocked
-      if (timeMs - lastRenderTime < 33) return;
+      // During initial load on mobile (first 3.5s), throttle to 30 FPS (~33ms interval)
+      // to reduce CPU competition during LCP rendering, then restore automatically.
+      const isStabilizing = (timeMs - initialStartTime) < 3500;
+      const targetInterval = (isMobileDevice && isStabilizing) ? 33 : (isMobileDevice ? 24 : 16);
+
+      if (timeMs - lastRenderTime < targetInterval) return;
       lastRenderTime = timeMs;
 
       time += 0.025;
