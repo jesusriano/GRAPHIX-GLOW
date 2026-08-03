@@ -2,15 +2,14 @@ import React, { useState, lazy, Suspense, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence, useScroll } from 'motion/react';
 import { Header } from './components/Header';
 import { Hero } from './components/Hero';
-import { Footer } from './components/Footer';
+const Footer = lazy(() => import('./components/Footer').then(m => ({ default: m.Footer })));
 import { InViewDeferred } from './components/InViewDeferred';
 import { Sparkles } from 'lucide-react';
 
 import founderPhoto from './assets/images/regenerated_image_1785569753971.jpg';
 import logoPhoto from './assets/images/regenerated_image_1785569587116.jpg';
 
-import { TestimonialsSkeleton } from './components/TestimonialsSection';
-import { BlogSkeleton } from './components/BlogSection';
+import { TestimonialsSkeleton, BlogSkeleton } from './components/Skeletons';
 
 import { 
   INITIAL_SERVICES, 
@@ -270,11 +269,13 @@ export default function App() {
       </main>
 
       {/* Footer */}
-      <Footer
-        onOpenQuote={() => setIsQuoteModalOpen(true)}
-        onOpenSeo={() => setIsSeoModalOpen(true)}
-        onNavigate={handleNavigate}
-      />
+      <InViewDeferred minHeight="400px">
+        <Footer
+          onOpenQuote={() => setIsQuoteModalOpen(true)}
+          onOpenSeo={() => setIsSeoModalOpen(true)}
+          onNavigate={handleNavigate}
+        />
+      </InViewDeferred>
 
       <Suspense fallback={null}>
         {/* AI Assistant Chat Panel */}
