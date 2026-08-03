@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import { motion, useMotionValue, useTransform, useSpring } from 'motion/react';
 import { 
   Sparkles, 
@@ -11,7 +11,7 @@ import {
   Code2 
 } from 'lucide-react';
 import { AnimatedCounter } from './AnimatedCounter';
-import { AiHolographicCore } from './AiHolographicCore';
+const AiHolographicCore = lazy(() => import('./AiHolographicCore').then(m => ({ default: m.AiHolographicCore })));
 
 interface HeroProps {
   onOpenQuote: () => void;
@@ -84,9 +84,11 @@ export const Hero: React.FC<HeroProps> = React.memo(({
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
         {/* Mobile-only compact Holographic AI Core positioned at the very top */}
-        <div className="w-full flex justify-center -mt-6 mb-2 lg:hidden">
+        <div className="w-full flex justify-center -mt-6 mb-2 lg:hidden min-h-[160px]">
           <div className="w-full max-w-[160px]">
-            <AiHolographicCore onOpenAiChat={onOpenAiChat} />
+            <Suspense fallback={<div className="w-full aspect-square" />}>
+              <AiHolographicCore onOpenAiChat={onOpenAiChat} />
+            </Suspense>
           </div>
         </div>
 
@@ -174,7 +176,7 @@ export const Hero: React.FC<HeroProps> = React.memo(({
           </div>
 
           {/* Right Column: Spectacular Holographic AI Core Centerpiece */}
-          <div className="hidden lg:flex lg:col-span-5 justify-center items-center">
+          <div className="hidden lg:flex lg:col-span-5 justify-center items-center min-h-[500px]">
             <motion.div
               style={{ x: x1, y: y1 }}
               initial={{ opacity: 0, scale: 0.9 }}
@@ -182,7 +184,9 @@ export const Hero: React.FC<HeroProps> = React.memo(({
               transition={{ duration: 1, delay: 0.3, ease: 'easeOut' }}
               className="w-full flex justify-center"
             >
-              <AiHolographicCore onOpenAiChat={onOpenAiChat} />
+              <Suspense fallback={<div className="w-full aspect-square" />}>
+                <AiHolographicCore onOpenAiChat={onOpenAiChat} />
+              </Suspense>
             </motion.div>
           </div>
         </div>

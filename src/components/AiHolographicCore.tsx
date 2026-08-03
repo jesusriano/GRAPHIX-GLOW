@@ -22,7 +22,7 @@ export const AiHolographicCore: React.FC<AiHolographicCoreProps> = React.memo(({
     if (!ctx) return;
 
     let animationFrameId: number;
-    let isVisible = true;
+    let isVisible = false; // start false
     let width = 0;
     let height = 0;
 
@@ -39,11 +39,12 @@ export const AiHolographicCore: React.FC<AiHolographicCoreProps> = React.memo(({
     updateDimensions();
 
     const handleResize = () => {
-      isVisible = true;
       requestAnimationFrame(() => {
         updateDimensions();
-        cancelAnimationFrame(animationFrameId);
-        animationFrameId = requestAnimationFrame(render);
+        if (isVisible) {
+          cancelAnimationFrame(animationFrameId);
+          animationFrameId = requestAnimationFrame(render);
+        }
       });
       // Fallback timeouts for mobile orientation reflow delays
       setTimeout(updateDimensions, 100);
@@ -80,7 +81,11 @@ export const AiHolographicCore: React.FC<AiHolographicCoreProps> = React.memo(({
       },
       { threshold: 0 }
     );
-    observer.observe(canvas);
+    
+    // Delay observing to allow LCP
+    const startTimeout = setTimeout(() => {
+      observer.observe(canvas);
+    }, 100);
 
     // 3D Particles Swarm
     const particleCount = 35;
@@ -295,10 +300,11 @@ export const AiHolographicCore: React.FC<AiHolographicCoreProps> = React.memo(({
       ctx.globalAlpha = 1;
     };
 
-    animationFrameId = requestAnimationFrame(render);
+    // Initial requestAnimationFrame call removed to prevent LCP blocking
 
     return () => {
       cancelAnimationFrame(animationFrameId);
+      clearTimeout(startTimeout);
       window.removeEventListener('resize', handleResize);
       window.removeEventListener('orientationchange', handleResize);
       if (parent) {
