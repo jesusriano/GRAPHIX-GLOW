@@ -1,4 +1,4 @@
-import React, { useState, lazy, Suspense, useCallback, useMemo } from 'react';
+import React, { useState, lazy, Suspense, useCallback } from 'react';
 import { motion, AnimatePresence, useScroll } from 'motion/react';
 import { Header } from './components/Header';
 import { Hero } from './components/Hero';

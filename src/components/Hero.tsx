@@ -3,13 +3,10 @@ import { motion, useMotionValue, useTransform, useSpring } from 'motion/react';
 import { 
   Sparkles, 
   ArrowRight, 
-  Bot, 
   Zap, 
-  ChevronRight, 
-  ShieldCheck, 
-  TrendingUp, 
-  Code2 
+  ChevronRight 
 } from 'lucide-react';
+import { DeferredRender } from './DeferredRender';
 import { AnimatedCounter } from './AnimatedCounter';
 const AiHolographicCore = lazy(() => import('./AiHolographicCore').then(m => ({ default: m.AiHolographicCore })));
 
@@ -86,9 +83,11 @@ export const Hero: React.FC<HeroProps> = React.memo(({
         {/* Mobile-only compact Holographic AI Core positioned at the very top */}
         <div className="w-full flex justify-center -mt-6 mb-2 lg:hidden min-h-[160px]">
           <div className="w-full max-w-[160px]">
-            <Suspense fallback={<div className="w-full aspect-square" />}>
-              <AiHolographicCore onOpenAiChat={onOpenAiChat} />
-            </Suspense>
+            <DeferredRender fallback={<div className="w-full aspect-square" />} delay={1500}>
+              <Suspense fallback={<div className="w-full aspect-square" />}>
+                <AiHolographicCore onOpenAiChat={onOpenAiChat} />
+              </Suspense>
+            </DeferredRender>
           </div>
         </div>
 

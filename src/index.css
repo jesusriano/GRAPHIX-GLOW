@@ -122,3 +122,19 @@
 
 
 
+
+@media (max-width: 768px) {
+  .animate-shimmer-text {
+    animation-iteration-count: 2 !important;
+  }
+  .animate-glow-pulse {
+    animation-iteration-count: 2 !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .animate-shimmer-text,
+  .animate-glow-pulse {
+    animation-delay: 2.5s !important;
+  }
+}
