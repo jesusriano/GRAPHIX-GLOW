@@ -111,14 +111,11 @@ export const Hero: React.FC<HeroProps> = React.memo(({
             </motion.div>
 
             {/* Main Title with Elegant Proportion & Shimmer Accent */}
-            <motion.h1
+            <h1
               className="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-[1.12] mb-6"
             >
               <motion.span
                 style={{ x: x2, y: y2 }}
-                initial={{ opacity: 1, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6 }}
                 className="block animate-shimmer-text"
               >
                 Impulsamos el{' '}
@@ -130,7 +127,7 @@ export const Hero: React.FC<HeroProps> = React.memo(({
                 </span>{' '}
                 de tu empresa con <span className="bg-gradient-to-r from-cyan-400 via-indigo-300 to-purple-400 bg-clip-text text-transparent font-black">tecnología, diseño & marketing</span>
               </motion.span>
-            </motion.h1>
+            </h1>
 
             {/* Concise Subtitle with High Readability */}
             <motion.p
