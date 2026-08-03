@@ -154,15 +154,15 @@ export default function App() {
 
       {/* Multi-Page Views Container */}
       <main className="flex-1 relative pt-20">
-        <Suspense fallback={<SectionSkeleton />}>
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeSection}
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -12 }}
-              transition={{ duration: 0.35, ease: 'easeOut' }}
-            >
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeSection}
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -12 }}
+            transition={{ duration: 0.35, ease: 'easeOut' }}
+          >
+            <Suspense fallback={<SectionSkeleton />}>
               {/* 1. INICIO (HOME PAGE) */}
               {activeSection === 'hero' && (
                 <div className="space-y-16 pb-16 relative overflow-hidden">
@@ -264,9 +264,9 @@ export default function App() {
                   </InViewDeferred>
                 </div>
               )}
-            </motion.div>
-          </AnimatePresence>
-        </Suspense>
+            </Suspense>
+          </motion.div>
+        </AnimatePresence>
       </main>
 
       {/* Footer */}
