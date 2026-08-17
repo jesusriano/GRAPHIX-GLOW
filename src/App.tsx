@@ -32,6 +32,7 @@ const TestimonialsSection = lazy(() => import('./components/TestimonialsSection'
 const BlogSection = lazy(() => import('./components/BlogSection').then(m => ({ default: m.BlogSection })));
 const FaqSection = lazy(() => import('./components/FaqSection').then(m => ({ default: m.FaqSection })));
 const ContactSection = lazy(() => import('./components/ContactSection').then(m => ({ default: m.ContactSection })));
+const PrivacySection = lazy(() => import('./components/PrivacySection').then(m => ({ default: m.PrivacySection })));
 const AiChatWidget = lazy(() => import('./components/AiChatWidget').then(m => ({ default: m.AiChatWidget })));
 const AdminDashboard = lazy(() => import('./components/AdminDashboard').then(m => ({ default: m.AdminDashboard })));
 const SeoToolsModal = lazy(() => import('./components/SeoToolsModal').then(m => ({ default: m.SeoToolsModal })));
@@ -261,6 +262,13 @@ export default function App() {
                   <InViewDeferred minHeight="300px">
                     <FaqSection faqs={INITIAL_FAQS} />
                   </InViewDeferred>
+                </div>
+              )}
+
+              {/* 8. PRIVACY POLICY PAGE */}
+              {activeSection === 'privacy' && (
+                <div className="pb-16">
+                  <PrivacySection />
                 </div>
               )}
             </Suspense>

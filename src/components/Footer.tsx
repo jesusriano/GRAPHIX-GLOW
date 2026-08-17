@@ -98,6 +98,7 @@ export const Footer: React.FC<FooterProps> = React.memo(({ onOpenQuote, onNaviga
               <li><button onClick={(e) => handleLink('pricing', e)} className="hover:text-cyan-300 transition cursor-pointer">Planes & Cotización</button></li>
               <li><button onClick={(e) => handleLink('blog', e)} className="hover:text-cyan-300 transition cursor-pointer">Blog SEO</button></li>
               <li><button onClick={(e) => handleLink('contact', e)} className="hover:text-cyan-300 transition cursor-pointer">Contacto Directo</button></li>
+              <li><button onClick={(e) => handleLink('privacy', e)} className="hover:text-cyan-300 transition cursor-pointer text-slate-400">Política de Privacidad</button></li>
             </ul>
           </div>
 
