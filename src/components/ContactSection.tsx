@@ -44,6 +44,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
   const [message, setMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [successMsg, setSuccessMsg] = useState('');
+  const [submitError, setSubmitError] = useState('');
 
   const servicesList = [
     'Inteligencia Artificial y Agentes',
@@ -67,6 +68,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
     if (!name || !email || !message) return;
 
     setIsSubmitting(true);
+    setSubmitError('');
 
     try {
       const res = await fetch('/api/leads', {
@@ -83,18 +85,21 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
         })
       });
 
-      const data = await res.json();
-      if (data.success) {
-        setSuccessMsg(data.message);
-        onLeadSubmitted(data.lead);
-        setName('');
-        setEmail('');
-        setPhone('');
-        setCompany('');
-        setMessage('');
+      const data = await res.json().catch(() => null);
+      if (!res.ok || !data?.success) {
+        throw new Error(data?.error || 'No se pudo enviar la solicitud.');
       }
+      setSuccessMsg(data.message);
+      onLeadSubmitted(data.lead);
+      setName('');
+      setEmail('');
+      setPhone('');
+      setCompany('');
+      setMessage('');
     } catch (err) {
-      setSuccessMsg('¡Gracias! Hemos recibido tus datos y te contactaremos en breve.');
+      setSubmitError(
+        'No pudimos enviar tu solicitud en este momento. Escríbenos a graphixglow@gmail.com o por WhatsApp al +52 55 3946 9253.'
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -335,6 +340,12 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
                       className="w-full bg-slate-950/80 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400"
                     />
                   </div>
+
+                  {submitError && (
+                    <p role="alert" className="text-xs text-rose-300 bg-rose-500/10 border border-rose-500/30 rounded-xl p-3">
+                      {submitError}
+                    </p>
+                  )}
 
                   <button
                     type="submit"

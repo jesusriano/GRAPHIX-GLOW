@@ -23,15 +23,17 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({
   const [message, setMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [submitError, setSubmitError] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name || !email) return;
 
     setIsSubmitting(true);
+    setSubmitError('');
 
     try {
-      await fetch('/api/leads', {
+      const res = await fetch('/api/leads', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -43,9 +45,15 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({
           message: message || `Diagnóstico de proyecto para ${projectType}`
         })
       });
+      const data = await res.json().catch(() => null);
+      if (!res.ok || !data?.success) {
+        throw new Error(data?.error || 'No se pudo enviar la solicitud.');
+      }
       setIsSuccess(true);
     } catch (err) {
-      setIsSuccess(true);
+      setSubmitError(
+        'No pudimos enviar tu solicitud en este momento. Escríbenos a graphixglow@gmail.com o por WhatsApp al +52 55 3946 9253.'
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -222,6 +230,12 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({
                       className="w-full bg-slate-950 border border-white/10 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-cyan-400"
                     />
                   </div>
+
+                  {submitError && (
+                    <p role="alert" className="text-xs text-rose-300 bg-rose-500/10 border border-rose-500/30 rounded-xl p-3">
+                      {submitError}
+                    </p>
+                  )}
 
                   <div className="flex items-center justify-between pt-4 border-t border-white/10">
                     <button

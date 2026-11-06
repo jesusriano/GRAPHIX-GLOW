@@ -19,81 +19,41 @@ interface Lead {
   status: 'Nuevo' | 'En Proceso' | 'Cotizado' | 'Cerrado';
 }
 
-// In-memory leads storage for demonstration & admin access
-const leadsDatabase: Lead[] = [
-  {
-    id: "lead-101",
-    name: "Carlos Eduardo Silva",
-    email: "carlos.silva@techcorp.com",
-    phone: "+52 55 1234 5678",
-    company: "TechCorp México",
-    serviceType: "Inteligencia Artificial y Agentes",
-    estimatedBudget: "$3,800 - $7,500 USD",
-    message: "Requerimos un agente de IA para atención al cliente integrado con nuestro CRM y WhatsApp.",
-    createdAt: new Date(Date.now() - 86400000 * 2).toISOString(),
-    status: "Nuevo"
-  },
-  {
-    id: "lead-102",
-    name: "Mariana Morales",
-    email: "mmorales@boutiquedesign.co",
-    phone: "+52 81 9876 5432",
-    company: "Boutique Design",
-    serviceType: "Diseño y Desarrollo Web Premium",
-    estimatedBudget: "$1,800 - $3,800 USD",
-    message: "Queremos rediseñar nuestro portal corporativo para reflejar una estética moderna tipo Vercel/Apple.",
-    createdAt: new Date(Date.now() - 86400000 * 5).toISOString(),
-    status: "En Proceso"
-  }
-];
+const MAX_LEADS = 500;
+const MAX_CHAT_MESSAGE = 2000;
+const MAX_CHAT_HISTORY = 20;
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-async function startServer() {
-  const app = express();
-  const PORT = 3000;
+// In-memory leads storage. Sin datos de ejemplo: no se exponen datos personales falsos ni reales.
+const leadsDatabase: Lead[] = [];
 
-  app.use(express.json());
+// Lectura de texto con límite de longitud. Devuelve undefined si el valor no es string.
+const readText = (value: unknown, max: number): string | undefined => {
+  if (value === undefined || value === null) return undefined;
+  if (typeof value !== "string") return undefined;
+  return value.trim().slice(0, max);
+};
 
-  // Initialize Gemini AI SDK (lazy check)
-  const getGeminiClient = () => {
-    const apiKey = process.env.GEMINI_API_KEY;
-    if (!apiKey) {
-      console.warn("GEMINI_API_KEY environment variable is not defined.");
+// Rate limit simple por IP (ventana fija) para evitar abuso de la API de Gemini y del formulario.
+const rateLimit = (max: number, windowMs: number) => {
+  const hits = new Map<string, { count: number; resetAt: number }>();
+  return (req: express.Request, res: express.Response, next: express.NextFunction) => {
+    const now = Date.now();
+    const key = req.ip || "unknown";
+    const entry = hits.get(key);
+    if (!entry || entry.resetAt <= now) {
+      hits.set(key, { count: 1, resetAt: now + windowMs });
+      return next();
     }
-    return new GoogleGenAI({
-      apiKey: apiKey || "",
-      httpOptions: {
-        headers: {
-          'User-Agent': 'aistudio-build'
-        }
-      }
-    });
+    entry.count += 1;
+    if (entry.count > max) {
+      return res.status(429).json({ error: "Demasiadas solicitudes. Intenta de nuevo en unos minutos." });
+    }
+    next();
   };
+};
 
-  // API Route: Health check
-  app.get("/api/health", (_req, res) => {
-    res.json({ status: "ok", service: "Graphix Glow Backend", timestamp: new Date().toISOString() });
-  });
-
-  // API Route: AI Assistant Chat
-  app.post("/api/chat", async (req, res) => {
-    try {
-      const { message, conversationHistory } = req.body;
-
-      if (!message || typeof message !== "string") {
-        return res.status(400).json({ error: "Mensaje requerido" });
-      }
-
-      const apiKey = process.env.GEMINI_API_KEY;
-      if (!apiKey) {
-        // Fallback response if GEMINI_API_KEY is not configured yet
-        return res.json({
-          reply: "¡Hola! Soy Maestro AI, el asistente virtual de Graphix Glow. Actualmente estoy en modo de demostración. ¿En qué servicio de Inteligencia Artificial, Desarrollo Web, Apps o Branding puedo asesorarte hoy?"
-        });
-      }
-
-      const ai = getGeminiClient();
-
-      const systemInstruction = `
+const SYSTEM_INSTRUCTION = `
 Eres Maestro AI, el Asistente Virtual Consultor de Graphix Glow, una agencia premium de Inteligencia Artificial, Desarrollo Web, Aplicaciones Móviles, Automatización Empresarial, Branding y Marketing Digital.
 
 Tu personalidad es:
@@ -115,20 +75,71 @@ Información clave de Graphix Glow:
 Responde de forma concisa (máximo 2-3 párrafos o puntos clave legibles), usa formato markdown elegante cuando sea conveniente.
 `;
 
-      const response = await ai.models.generateContent({
+async function startServer() {
+  const app = express();
+  const PORT = 3000;
+
+  app.use(express.json({ limit: "100kb" }));
+
+  // Cliente de Gemini creado una sola vez.
+  let geminiClient: GoogleGenAI | null = null;
+  const getGeminiClient = () => {
+    if (!geminiClient) {
+      geminiClient = new GoogleGenAI({
+        apiKey: process.env.GEMINI_API_KEY || "",
+        httpOptions: {
+          headers: {
+            'User-Agent': 'aistudio-build'
+          }
+        }
+      });
+    }
+    return geminiClient;
+  };
+
+  // API Route: Health check
+  app.get("/api/health", (_req, res) => {
+    res.json({ status: "ok", service: "Graphix Glow Backend", timestamp: new Date().toISOString() });
+  });
+
+  // API Route: AI Assistant Chat
+  app.post("/api/chat", rateLimit(20, 60_000), async (req, res) => {
+    try {
+      const message = readText(req.body?.message, MAX_CHAT_MESSAGE);
+      if (!message) {
+        return res.status(400).json({ error: "Mensaje requerido" });
+      }
+
+      if (!process.env.GEMINI_API_KEY) {
+        // Respuesta de respaldo si GEMINI_API_KEY no está configurada
+        return res.json({
+          reply: "¡Hola! Soy Maestro AI, el asistente virtual de Graphix Glow. Actualmente estoy en modo de demostración. ¿En qué servicio de Inteligencia Artificial, Desarrollo Web, Apps o Branding puedo asesorarte hoy?"
+        });
+      }
+
+      // Solo se reenvían los últimos turnos válidos del historial.
+      const history = Array.isArray(req.body?.conversationHistory)
+        ? req.body.conversationHistory.slice(-MAX_CHAT_HISTORY)
+        : [];
+      const contents = history
+        .map((msg: any) => ({
+          role: msg?.sender === "user" ? "user" : "model",
+          text: readText(msg?.text, MAX_CHAT_MESSAGE),
+        }))
+        .filter((m: { text?: string }) => !!m.text)
+        .map((m: { role: string; text?: string }) => ({ role: m.role, parts: [{ text: m.text }] }));
+
+      const response = await getGeminiClient().models.generateContent({
         model: "gemini-3.6-flash",
         contents: [
-          ...(conversationHistory || []).map((msg: any) => ({
-            role: msg.sender === "user" ? "user" : "model",
-            parts: [{ text: msg.text }]
-          })),
+          ...contents,
           {
             role: "user",
             parts: [{ text: message }]
           }
         ],
         config: {
-          systemInstruction,
+          systemInstruction: SYSTEM_INSTRUCTION,
           temperature: 0.7,
         }
       });
@@ -137,46 +148,57 @@ Responde de forma concisa (máximo 2-3 párrafos o puntos clave legibles), usa f
 
       return res.json({ reply: replyText });
     } catch (error: any) {
+      // Se registra el detalle en el servidor, pero no se envía al cliente.
       console.error("Error en /api/chat:", error);
-      const errMessage = error?.message || "";
+      const errMessage = String(error?.message || "");
       if (errMessage.includes("resource_exhausted") || errMessage.includes("quota") || errMessage.includes("429")) {
         return res.json({
           reply: "¡Hola! En este momento hemos alcanzado el límite temporal de consultas en nuestro modelo de IA por alta demanda. Sin embargo, en GraphixGlow seguimos listos para ayudarte con tu transformación digital integral (desarrollo web, apps, automatización y marketing). ¿Te gustaría agendar una asesoría directa o solicitar una cotización con nuestros arquitectos?"
         });
       }
-      return res.status(500).json({
-        error: "Error procesando el chat de IA",
-        details: errMessage || "Internal server error"
-      });
+      return res.status(500).json({ error: "Error procesando el chat de IA" });
     }
   });
 
-  // API Route: Leads / Quotes
-  app.get("/api/leads", (_req, res) => {
+  // API Route: Leads / Quotes (solo administración)
+  app.get("/api/leads", (req, res) => {
+    const expected = process.env.ADMIN_TOKEN;
+    if (!expected) {
+      return res.status(503).json({ error: "Panel de administración no configurado." });
+    }
+    if (req.get("x-admin-token") !== expected) {
+      return res.status(401).json({ error: "No autorizado." });
+    }
     res.json({ leads: leadsDatabase });
   });
 
-  app.post("/api/leads", (req, res) => {
-    const { name, email, phone, company, serviceType, estimatedBudget, message } = req.body;
+  app.post("/api/leads", rateLimit(10, 60_000), (req, res) => {
+    const name = readText(req.body?.name, 120);
+    const email = readText(req.body?.email, 200);
+    const message = readText(req.body?.message, 3000);
 
     if (!name || !email || !message) {
       return res.status(400).json({ error: "Nombre, email y mensaje son requeridos." });
+    }
+    if (!EMAIL_RE.test(email)) {
+      return res.status(400).json({ error: "El correo electrónico no es válido." });
     }
 
     const newLead: Lead = {
       id: `lead-${Date.now()}`,
       name,
       email,
-      phone: phone || "No proporcionado",
-      company: company || "",
-      serviceType: serviceType || "Consulta General",
-      estimatedBudget: estimatedBudget || "Por definir",
+      phone: readText(req.body?.phone, 40) || "No proporcionado",
+      company: readText(req.body?.company, 120) || "",
+      serviceType: readText(req.body?.serviceType, 120) || "Consulta General",
+      estimatedBudget: readText(req.body?.estimatedBudget, 120) || "Por definir",
       message,
       createdAt: new Date().toISOString(),
       status: "Nuevo"
     };
 
     leadsDatabase.unshift(newLead);
+    if (leadsDatabase.length > MAX_LEADS) leadsDatabase.length = MAX_LEADS;
 
     res.status(201).json({
       success: true,
